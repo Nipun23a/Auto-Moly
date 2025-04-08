@@ -19,7 +19,7 @@ return new class extends Migration
             $table -> decimal('price',12,2);
             $table -> decimal('mileage',10,2);
             $table -> enum('fuel_type',['diesel','petrol','electric']);
-            $table -> enum('status',['auto','manual']);
+            $table -> enum('transmission',['auto','manual']);
             $table -> enum('condition',['new','used','pre-owned']);
             $table -> text('location');
             $table -> text('description');

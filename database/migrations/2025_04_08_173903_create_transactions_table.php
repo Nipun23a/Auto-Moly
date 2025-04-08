@@ -19,7 +19,7 @@ return new class extends Migration
             $table -> string('payment_method');
             $table->timestamps();
 
-            $table -> foreign('buyer_id')->references('id')->on('buyers');
+            $table -> foreign('buyer_id')->references('id')->on('users');
             $table -> foreign('vehicle_id')->references('id')->on('vehicles');
         });
     }
