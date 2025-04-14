@@ -1,41 +1,12 @@
 <!-- header area start -->
 <header class="header-three header--sticky">
-    <div class="header-top">
-        <div class="container">
-            <div class="header-top-inner d-flex align-items-center justify-content-between">
-                <div class="left d-flex align-items-center">
-                    <div class="map-area">
-                        <i class="rt-icon-phone-flip"></i>
-                        <a href="call-to:12505550199">+12505550199</a>
-                    </div>
-                    <div class="map-area">
-                        <i class="rt-icon-envelope"></i>
-                        <a href="mail-to:Autovault@gmail.com">Autovault@gmail.com</a>
-                    </div>
-                    <div class="map-area">
-                        <i class="rt-icon-marker"></i>
-                        <a href="#">280 Augusta Avenue, M5T 2L9 Toronto, Canada</a>
-                    </div>
-                </div>
-                <div class="right">
-                    <div class="social-area-transparent">
-                        <ul class="d-flex align-items-center">
-                            <li><a href="#"><img src="assets/images/icon/x.svg" alt=""></a></li>
-                            <li><a href="#"><img src="assets/images/icon/in.svg" alt=""></a></li>
-                            <li><a href="#"><img src="assets/images/icon/f.svg" alt=""></a></li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
     <div class="container">
         <div class="header-bottom">
             <div class="row">
                 <div class="col-lg-12">
                     <div class="header-wrapper-1">
                         <div class="logo-area-start">
-                            <a href="index.html" class="logo">
+                            <a href="{{route('home')}}" class="logo">
                                 <img src="assets/images/logo/logo.svg" width="99" alt="logo_area">
                             </a>
                         </div>
@@ -43,67 +14,27 @@
                             <div class="bottom d-flex align-items-center justify-content-between">
                                 <div class="nav-area">
                                     <ul class="">
-                                        <li class="has-dropdown main-nav">
-                                            <a class="main-menu" href="javascript:void(0)">Home</a>
-                                            <ul class="submenu parent-nav">
-                                                <li><a href="index.html">Dealer One</a></li>
-                                                <li><a href="index-two.html">Dealer Two</a></li>
-                                                <li><a href="index-three.html">Dealer Three</a></li>
-                                                <li><a href="index-four.html">Shop Demo</a></li>
-                                                <li><a href="index-seven.html">Dealer Slider</a></li>
-                                                <li><a href="index-eight.html">Dealer Video</a></li>
-                                                <li><a href="index-five.html">Wash Demo</a></li>
-                                                <li><a href="index-six.html">Repair Demo</a></li>
-                                            </ul>
-                                        </li>
-
                                         <li class="main-nav">
-                                            <a class="main-menu" href="about.html">About Us</a>
+                                            <a class="main-menu" href="{{route('home')}}">Home</a>
                                         </li>
-                                        <li class="main-nav has-dropdown">
-                                            <a class="main-menu" href="javascript:void(0)">Listing</a>
-                                            <ul class="submenu parent-nav">
-                                                <li><a href="portfolio.html">Cars One</a></li>
-                                                <li><a href="portfolio-2.html">Cars Two</a></li>
-                                                <li><a href="portfolio-3.html">Cars Three</a></li>
-                                                <li><a href="portfolio-details.html">Car Single</a></li>
-                                                <li><a href="portfolio-details-2.html">Car Single Two</a></li>
-                                            </ul>
+                                        <li class="main-nav">
+                                            <a class="main-menu" href="{{route('about')}}">About Us</a>
                                         </li>
-                                        <li class="main-nav has-dropdown">
-                                            <a class="main-menu" href="javascript:void(0)">Page</a>
-                                            <ul class="submenu mega-menu parent-nav">
-                                                <li><a href="service.html">Service</a></li>
-                                                <li><a href="blog.html">Blog</a></li>
-                                                <li><a href="pricing.html">Pricing</a></li>
-                                                <li><a href="blog-2.html">Blog Two</a></li>
-                                                <li><a href="faq.html">FAQ</a></li>
-                                                <li><a href="blog-details.html">Blog Single</a></li>
-                                                <li><a href="sold-car.html">Sold Car</a></li>
-                                                <li><a href="team.html">Team</a></li>
-                                                <li><a href="calculator.html">Calculator</a></li>
-                                                <li><a href="car-dealer.html">Car Dealer</a></li>
-                                                <li><a href="account.html">Account</a></li>
-                                                <li><a href="car-dealer-details.html">Dealer Single</a></li>
-                                            </ul>
+                                        <li class="main-nav">
+                                            <a class="main-menu" href="{{route('cars')}}">Cars</a>
                                         </li>
-                                        <li class="main-nav has-dropdown">
-                                            <a class="main-menu" href="javascript:void(0)">Shop</a>
-                                            <ul class="submenu parent-nav">
-                                                <li><a href="shop.html">Shop</a></li>
-                                                <li><a href="shop-2.html">Shop Two</a></li>
-                                                <li><a href="shop-3.html">Shop Three</a></li>
-                                                <li><a href="cart.html">Cart</a></li>
-                                                <li><a href="checkout.html">Checkout</a></li>
-                                                <li><a href="shop-details.html">Shop Single</a></li>
-                                            </ul>
+                                        <li class="main-nav">
+                                            <a class="main-menu" href="{{route('scanner')}}">Scanner</a>
                                         </li>
-                                        <li class="main-nav"><a class="main-menu" href="contact.html">Contact</a></li>
+                                        <li class="main-nav">
+                                            <a class="main-menu" href="{{route('service')}}">Service</a>
+                                        </li>
+                                        <li class="main-nav"><a class="main-menu" href="{{route('contact')}}">Contact</a></li>
                                     </ul>
                                 </div>
                                 <div class="bottom-right">
                                     <div class="button-area">
-                                        <a href="account.html" class="rts-btn btn-border radius-small icon">
+                                        <a href="{{route('login')}}" class="rts-btn btn-border radius-small icon">
                                             Sign In
                                             <svg width="11" height="11" viewBox="0 0 11 11" fill="none" xmlns="http://www.w3.org/2000/svg">
                                                 <path d="M8.61999 10.96H5.49999C5.28445 10.96 5.10999 10.7856 5.10999 10.57C5.10999 10.3545 5.28445 10.18 5.49999 10.18H8.61999C9.26518 10.18 9.78999 9.65523 9.78999 9.01004V1.99004C9.78999 1.34485 9.26518 0.820039 8.61999 0.820039H5.49999C5.28445 0.820039 5.10999 0.645579 5.10999 0.430039C5.10999 0.214499 5.28445 0.0400391 5.49999 0.0400391H8.61999C9.69522 0.0400391 10.57 0.914809 10.57 1.99004V9.01004C10.57 10.0853 9.69522 10.96 8.61999 10.96ZM7.33572 5.22431L5.38572 3.27431C5.23336 3.12195 4.98662 3.12195 4.83426 3.27431C4.6819 3.42667 4.6819 3.67341 4.83426 3.82577L6.11853 5.11004H0.819993C0.604453 5.11004 0.429993 5.2845 0.429993 5.50004C0.429993 5.71558 0.604453 5.89004 0.819993 5.89004H6.11853L4.83426 7.17431C4.6819 7.32667 4.6819 7.57341 4.83426 7.72577C4.91044 7.80195 5.01015 7.84004 5.10999 7.84004C5.20983 7.84004 5.30954 7.80195 5.38572 7.72577L7.33572 5.77577C7.48808 5.62341 7.48808 5.37667 7.33572 5.22431Z" fill="#FF3600" />
