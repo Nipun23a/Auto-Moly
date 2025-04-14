@@ -20,13 +20,13 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('email')->unique();
-            $table -> unsignedBigInteger('role');
+            $table -> unsignedBigInteger('role_id');
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->rememberToken();
             $table->timestamps();
 
-            $table -> foreign('role') -> references('id') -> on('roles');
+            $table -> foreign('role_id') -> references('id') -> on('roles');
         });
 
         Schema::create('user_contacts',function(Blueprint $table){
@@ -59,10 +59,11 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('roles');
         Schema::dropIfExists('user_contacts');
         Schema::dropIfExists('users');
         Schema::dropIfExists('password_reset_tokens');
         Schema::dropIfExists('sessions');
+        Schema::dropIfExists('roles');
+
     }
 };
