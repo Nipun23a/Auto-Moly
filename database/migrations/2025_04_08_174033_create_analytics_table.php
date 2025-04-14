@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('vehicle_analytics', function (Blueprint $table) {
+        Schema::create('analytics', function (Blueprint $table) {
             $table->id(); // Primary Key
             $table->foreignId('vehicle_id')->constrained('vehicles')->onDelete('cascade'); // FK to vehicles table
 

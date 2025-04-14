@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema:: create('role',function(Blueprint $table){
+        Schema:: create('roles',function(Blueprint $table){
            $table -> id();
            $table -> string('name');
         });
@@ -26,7 +26,7 @@ return new class extends Migration
             $table->rememberToken();
             $table->timestamps();
 
-            $table -> foreign('role') -> references('id') -> on('role');
+            $table -> foreign('role') -> references('id') -> on('roles');
         });
 
         Schema::create('user_contacts',function(Blueprint $table){
@@ -59,7 +59,7 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('role');
+        Schema::dropIfExists('roles');
         Schema::dropIfExists('user_contacts');
         Schema::dropIfExists('users');
         Schema::dropIfExists('password_reset_tokens');
