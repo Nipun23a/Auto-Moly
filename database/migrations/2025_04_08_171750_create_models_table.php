@@ -16,11 +16,11 @@ return new class extends Migration
             $table -> string('name');
             $table -> text('description');
             $table -> unsignedBigInteger('brand_id');
-            $table -> unsignedBigInteger('model_id');
+            $table -> unsignedBigInteger('category_id');
             $table->timestamps();
 
             $table -> foreign('brand_id')->references('id')->on('brands');
-            $table -> foreign('model_id')->references('id')->on('models');
+            $table -> foreign('category_id')->references('id')->on('categories');
         });
     }
 
