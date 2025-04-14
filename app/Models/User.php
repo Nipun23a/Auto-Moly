@@ -21,6 +21,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'role_id',
     ];
 
     /**
@@ -44,5 +45,32 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    public function role(){
+        return $this -> belongsTo(Role::class);
+    }
+    public function contacts(){
+        return $this -> hasMany(UserContact::class,'user_id','id');
+    }
+    public function vehicles(){
+        return $this->hasMany(Vehicle::class,'user_id','id');
+    }
+
+    public function vehicleComparisons()
+    {
+        return $this->hasMany(VehicleComparison::class,'user_id','id');
+    }
+
+    public function aiRecommendations(){
+        return $this->hasMany(AiRecommendation::class,'user_id','id');
+    }
+
+    public function chatbotQueries(){
+        return $this -> hasMany(ChatbotQuery::class,'user_id','id');
+    }
+
+    public function transactions(){
+        return $this -> hasMany(Transaction::class,'buyer_id','id');
     }
 }

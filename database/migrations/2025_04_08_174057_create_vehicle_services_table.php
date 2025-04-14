@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('vehicle_services', function (Blueprint $table) {
             $table->id();
             $table->foreignId('vehicle_id')->constrained('vehicles')->onDelete('cascade');
-            $table->foreignId('service_id')->constrained('vehicle_services')->onDelete('cascade');
+            $table->foreignId('service_id')->constrained('services')->onDelete('cascade');
 
             $table->boolean('is_active')->default(true);
 
