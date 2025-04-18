@@ -446,7 +446,7 @@ var {
 }
 
 /*---------------------------
-	List Style 
+	List Style
 ---------------------------*/
 ul,
 ol {
@@ -630,7 +630,7 @@ ol ul {
 }
 
 /*=========================
-    Section Separation 
+    Section Separation
 ==========================*/
 .mb_dec--25 {
   margin-bottom: -25px;
@@ -9040,7 +9040,8 @@ textarea {
 }
 
 button,
-input {
+input,
+textarea{
   line-height: normal;
 }
 
@@ -9079,6 +9080,7 @@ input[type=search]::-webkit-search-decoration {
 }
 
 button::-moz-focus-inner,
+textarea::-moz-focus-inner,
 input::-moz-focus-inner {
   border: 0;
   padding: 0;
@@ -9606,10 +9608,10 @@ iframe {
 }
 
 /*===============================
-    Background Color 
+    Background Color
 =================================*/
 /*===========================
-Background Image 
+Background Image
 =============================*/
 .bg_image {
   background-repeat: no-repeat;
@@ -10017,7 +10019,7 @@ textarea:-ms-input-placeholder {
 }
 
 /*=============================
-	Overlay styles 
+	Overlay styles
 ==============================*/
 [data-overlay],
 [data-black-overlay],

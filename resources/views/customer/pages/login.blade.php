@@ -53,17 +53,36 @@
                                 <div class="title-mid-wrapper-home-two sal-animate" data-sal="slide-up" data-sal-delay="150" data-sal-duration="800">
                                     <h3 class="title">Login</h3>
                                 </div>
-                                <form id="contact-form-contact" action="mailer.php" method="post">
-                                    <input type="email" name="email" placeholder="Email Address or Username" required="">
-                                    <input type="text" name="name" placeholder="Password" required="">
+                                <form id="contact-form-contact" action="{{ route('login') }}" method="POST">
+                                    @csrf
+
+                                    <input type="email" name="email" placeholder="Email Address or Username" value="{{ old('email') }}" required>
+
+                                    <input type="password" name="password" placeholder="Password" required>
+
                                     <div class="checkbox">
-                                        <input type="checkbox" value="lsRememberMe" id="rememberMe"> <label for="rememberMe">Remember me</label>
+                                        <input type="checkbox" name="remember" id="rememberMe" {{ old('remember') ? 'checked' : '' }}>
+                                        <label for="rememberMe">Remember me</label>
                                     </div>
+
                                     <button type="submit" class="rts-btn btn-primary radius-small">Log In</button>
+
                                     <div class="forgot-password">
-                                        <a href="#0">Forgot Your Password?</a>
+                                        <a href="#">Forgot Your Password?</a>
                                     </div>
+
+                                    {{-- Show error messages --}}
+                                    @if ($errors->any())
+                                        <div class="alert alert-danger mt-2">
+                                            <ul class="mb-0">
+                                                @foreach ($errors->all() as $error)
+                                                    <li>{{ $error }}</li>
+                                                @endforeach
+                                            </ul>
+                                        </div>
+                                    @endif
                                 </form>
+
                             </div>
                         </div>
                         <div class="col-lg-6">
@@ -71,13 +90,24 @@
                                 <div class="title-mid-wrapper-home-two sal-animate" data-sal="slide-up" data-sal-delay="150" data-sal-duration="800">
                                     <h3 class="title">Registration</h3>
                                 </div>
-                                <form id="contact-form-contact" action="mailer.php" method="post">
-                                    <input type="text" name="name" placeholder="Your Name" required="">
-                                    <input type="email" name="email" placeholder="Email Address" required="">
-                                    <input type="text" name="name" placeholder="New Password" required="">
-                                    <input type="text" name="name" placeholder="Confirm Password" required="">
+                                <form id="contact-form-contact" action="{{ route('register') }}" method="post">
+                                    @csrf <!-- Laravel CSRF token for security -->
+                                    <input type="text" name="name" placeholder="Your Name" required>
+                                    <input type="email" name="email" placeholder="Email Address" required>
+                                    <input type="password" name="new_password" placeholder="New Password" required>
+                                    <input type="password" name="confirm_password" placeholder="Confirm Password" required>
+
+                                    <!-- Telephone Section -->
+                                    <input type="text" name="telephone" placeholder="Telephone Number" required>
+
+                                    <!-- Address as Textarea -->
+                                    <input name="address" placeholder="Address" required></input>
+
                                     <button type="submit" class="rts-btn btn-primary radius-small">Register</button>
+
                                 </form>
+
+
                             </div>
                         </div>
                     </div>
