@@ -13,7 +13,7 @@
 
                             @auth
                                 <!-- Show when user is logged in -->
-                                <li><a href="{{ route('compare') }}"><i class="fa fa-exchange" aria-hidden="true"></i></a></li>
+                                <li><a href="{{ route('customer.vehicles.compare') }}"><i class="fa fa-exchange" aria-hidden="true"></i></a></li>
 
                                 <li class="cart-popup">
                                     <a href="#"><i class="fa fa-shopping-cart" aria-hidden="true"></i></a>

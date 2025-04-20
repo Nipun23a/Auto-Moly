@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ChatbotController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\VehicleController;
 use Illuminate\Support\Facades\Route;
@@ -46,6 +47,10 @@ Route::get('/vehicle/search', [VehicleController::class, 'search'])->name('custo
 Route::get('/new', [VehicleController::class, 'filterByCondition'])->name('customer.vehicles.new')->defaults('condition', 'new');
 Route::get('/used', [VehicleController::class, 'filterByCondition'])->name('customer.vehicles.used')->defaults('condition', 'used');
 Route::get('/compare', [VehicleController::class, 'compare'])->name('customer.vehicles.compare');
+Route::middleware(['auth'])->group(function () {
+    Route::post('/chatbot/query', [App\Http\Controllers\ChatbotController::class, 'processQuery'])->name('chatbot.query');
+});
+
 
 
 
