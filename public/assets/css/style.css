@@ -1,4 +1,4 @@
-/*--------------------- Copyright (c) 2017 -----------------------
+/*--------------------- Copyright (c) 2018 -----------------------
 [Master Stylesheet]
 
 Project: Impel Car Dealer Responsive HTML Template
@@ -951,7 +951,7 @@ span.srch_close_btn_icon {
 }
 .impl_home_slider_wrapper {
     width: 100%;
-    background-image: url(../images/home_slider.jpg);
+    background-image: url(http://via.placeholder.com/1920x1080/666);
     background-size: cover;
     background-repeat: no-repeat;
     padding-top: 185px;
@@ -969,7 +969,7 @@ span.srch_close_btn_icon {
     text-transform: uppercase;
     font-weight: 800;
     margin-bottom: -27px;
-    letter-spacing: 17px;
+    letter-spacing: 10px;
 }
 .impl_home_slider .slick-slide:focus {
     outline: none;
@@ -1394,7 +1394,7 @@ p.slogan strong {
 /*----Service Css Start----*/
 
 .impl_service_wrapper {
-    background-image: url(../images/service/service_bg1.jpg);
+    background-image:url(http://via.placeholder.com/1920x620/666);
     background-position: center center;
     background-repeat: no-repeat;
     background-size: cover;
@@ -1494,7 +1494,7 @@ p.slogan strong {
     z-index: 1;
 }
 .impl_video_inner {
-    background-image: url(../images/service/service_bg2.jpg);
+    background-image: url(http://via.placeholder.com/1045x697/eee);
     width: 100%;
     height: 106%;
     right: 0;
@@ -1707,7 +1707,7 @@ p.slogan strong {
 /*----Help Css Start----*/
 
 .impl_help_wrapper {
-    background-image: url(../images/help.jpg);
+    background-image: url(http://via.placeholder.com/1920x300);
     background-size: cover;
     position: relative;
     z-index: 1;
@@ -2029,7 +2029,7 @@ ul.impl_pst_views li a i {
 /*----Footer Css Start----*/
 
 .impl_footer_wrapper {
-    background-image: url(https://via.placeholder.com/1920x517);
+    background-image: url(http://via.placeholder.com/1920x721);
     background-size: cover;
     position: relative;
     z-index: 1;
@@ -2097,14 +2097,12 @@ ul.impl_pst_views li a i {
     padding-top: 25px;
     line-height: 30px;
     margin: 0px;
-    opacity: 0.9;
 }
 h1.impl_foo_title {
     font-size: 20px;
     text-transform: capitalize;
     font-weight: 600;
     padding: 42px 0px 25px;
-    opacity: 0.9;
 }
 .impl_foo_box ul {
     padding: 0px;
@@ -2134,7 +2132,6 @@ h1.impl_foo_title {
 }
 .impl_foo_box p {
     line-height: 30px;
-    opacity: 0.9;
 }
 .impl_foo_icon {
     font-size: 18px;
@@ -2403,7 +2400,7 @@ p.impl_ser_para {
     z-index: 1;
 }
 .impl_service_wrapper.impl_faq_wrapper .impl_video_inner {
-    background-image: url(../images/service/service_bg3.jpg);
+    background-image: url(http://via.placeholder.com/952x721/666);
     background-size: cover;
     -webkit-clip-path: polygon(0 0, 100% 0%, 83% 100%, 0% 100%);
     clip-path: polygon(0 0, 100% 0%, 83% 100%, 0% 100%);
@@ -2477,7 +2474,7 @@ p.impl_ser_para {
     backface-visibility: hidden;
 }
 .impl_counter_wrapper {
-    background-image: url(../images/counter_bg.jpg);
+    background-image: url(http://via.placeholder.com/1920x300);
     background-size: cover;
     position: relative;
     padding: 100px 0px 90px;
@@ -2517,7 +2514,7 @@ p.impl_ser_para {
     margin: 0px;
 }
 .impl_footer_wrapper.impl_home_footer {
-    background-image: url(../images/footer/footer_bg.jpg);
+    background-image: url(http://via.placeholder.com/1920x721);
     z-index: -1;
     position: fixed;
     bottom: 0;
@@ -2576,7 +2573,7 @@ p.impl_ser_para {
 /*----About Page Css start-----*/
 
 .impl_bread_wrapper {
-    background-image: url(https://via.placeholder.com/1920x345);
+    background-image: url(http://via.placeholder.com/1920x360);
     background-size: cover;
     position: relative;
     padding: 136px 0px;
@@ -2598,7 +2595,6 @@ p.impl_ser_para {
     width: auto;
     padding: 0px;
     margin: 0px;
-opacity: 0.9;
 }
 .impl_bread_wrapper ol.breadcrumb li.breadcrumb-item {
     display: inline-block;
@@ -2610,7 +2606,6 @@ opacity: 0.9;
     font-size: 40px;
     text-transform: uppercase;
     padding-bottom: 10px;
-    opacity: 0.9;
 }
 .impl_bread_wrapper ol.breadcrumb li.breadcrumb-item a {
     font-size: 16px;
@@ -2702,7 +2697,7 @@ opacity: 0.9;
     }
 }
 .impl_history_wrapper {
-    background-image: url(../images/about/history_wrapper.jpg);
+    background-image: url(http://via.placeholder.com/1920x960/f15b5b);
     background-size: cover;
     padding-top: 50px;
 }
@@ -3451,7 +3446,7 @@ h2.widget-title {
     height: 93%;
 }
 .impl_provide_wrapper .impl_video_inner {
-    background-image: url(../images/service/video_bg1.jpg);
+    background-image: url(http://via.placeholder.com/555x397);
     height: 100%;
     right: 0;
     top: 0;
@@ -3461,7 +3456,7 @@ h2.widget-title {
     clip-path: none;
 }
 .impl_provide_wrapper .impl_video_inner.impl_ser_video_img {
-    background-image: url(../images/service/video_bg2.jpg);
+    background-image: url(http://via.placeholder.com/555x397);
 }
 .impl_provide_wrapper .impl_play_icon {
     width: 50px;
@@ -3907,10 +3902,8 @@ h3.comment-reply-title {
     counter-reset: step;
     padding: 0px;
     display: inline-block;
-
-   
 }
-#step_progressbar li, #impl_sform .steps ul li {
+#step_progressbar li ,#impl_sform .steps ul li{
     list-style-type: none;
     color: #fff;
     text-transform: capitalize;
@@ -3929,7 +3922,6 @@ h3.comment-reply-title {
     -o-transform: skewX(-15deg);
     -ms-transform: skewX(-15deg);
     transform: skewX(-15deg);
-    opacity: 0.9;
 }
 #step_progressbar li span,#impl_sform .steps ul li .step_number {
     display: inline-block;
@@ -4003,10 +3995,6 @@ h3.comment-reply-title {
     color: #ffffff;
     opacity: 0.5;
     cursor: not-allowed;
-    opacity: 0.9;
-}
-.impl_foo_box.footer_abt_text a {
-    opacity: 0.9;
 }
 #impl_sform ul.step_car_img li {
     margin-right: 52px;
@@ -4026,6 +4014,7 @@ h3.comment-reply-title {
 .wizard > .content > .body label.error {margin: 10px 0 0;color: red;}
 
 
+
 .form_holder {
     text-align: center;
     margin: 30px 0 0;
@@ -4037,7 +4026,6 @@ h2.step-title {
     width: 100%;
     float: left;
     margin-bottom: 30px;
-	text-align: left;
 }
 .impl_step .form-control {
     padding: 0px;
@@ -4298,7 +4286,7 @@ ul.step_car_img li:hover .step_view_img_over {
     min-width: 120px;
 }
 .impl_spesi_wrapper {
-    background-image: url(../images/purchase/car_spesi.jpg);
+    background-image: url(http://via.placeholder.com/1920x400);
     position: relative;
 }
 .impl_car_spesi_list {
@@ -4391,7 +4379,7 @@ ul.step_car_img li:hover .step_view_img_over {
     box-shadow: none;
 }
 .impl_descrip_wrapper {
-    background-image: url(../images/purchase/car_spesi.jpg);
+    background-image: url(http://via.placeholder.com/1920x450/f15b5b);
     padding: 45px 0px 5px;
     background-size: cover;
 }
@@ -5029,7 +5017,7 @@ label.compare_check_label {
     margin: 0;
 }
 .impl_sign_img {
-    background-image: url(../images/sign.jpg);
+    background-image: url(http://via.placeholder.com/600x510/666);
     background-size: cover;
     float: right;
     width: 61%;
@@ -5252,7 +5240,7 @@ label.compare_check_label {
 /*----Error Page Css Start----*/
 
 .impl_error_wrapper {
-    background-image: url(../images/about/history_wrapper.jpg);
+    background-image: url(http://via.placeholder.com/1920x640/f15b5b);
     background-size: cover;
     padding: 150px 0px;
 }
@@ -5342,7 +5330,6 @@ label.compare_check_label {
 	-ms-transform: translateY(-20px);
 	-transform: translateY(-20px);
 }
-
 /*---------- Responsive css Start -------*/
 
 @media(max-width:1600px) {

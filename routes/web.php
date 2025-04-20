@@ -15,7 +15,7 @@ Route::post('/login',[UserController::class,'login'])->name('login');
 // Handle Registration
 Route::post('/register',[UserController::class,'store'])->name('register');
 
-// Logout Screen
+//1 Logout Screen
 Route::post('/logout',[UserController::class,'logout'])->name('logout');
 Route::get('/services',function (){
     return view('customer.pages.service');
@@ -29,10 +29,19 @@ Route::get('/contact',function(){
 Route::get('/scanner',function (){
     return view('customer.pages.scanner');
 })->name('scanner');
-Route::get('/cars',function (){
-    return view('customer.pages.cars.cars');
-})->name('cars');
+Route::get('/vehicle',function (){
+    return view('customer.pages.vehicles.index');
+})->name('vehicle');
 Route::get('/car-details',function (){
     return view('customer.pages.cars.car-single');
 })->name('car-details');
+Route::get('/compare',function (){
+    return view('customer.pages.vehicles.compare');
+})->name('compare');
+Route::get('/sell',function (){
+    return view('customer.pages.vehicles.create');
+})->name('vehicle.sell');
+Route::get('/scanner',function (){
+    return view('customer.pages.scanner');
+})->name('scanner');
 
