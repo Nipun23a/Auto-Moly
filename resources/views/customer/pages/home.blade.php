@@ -88,66 +88,46 @@
             <div class="row">
                 <div class="col-lg-12 col-md-12">
                     <div class="impl_search_box custom_select">
-                        <div class="row">
-                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                                <div class="impl_select_boxes">
-                                    <select>
-                                        <option>Select Brand</option>
-                                        <option value="1">Brand 1</option>
-                                        <option value="2">Brand 2</option>
-                                        <option value="3">Brand 3</option>
-                                        <option value="4">Brand 4</option>
-                                    </select>
-                                    <select>
-                                        <option>Select Status</option>
-                                        <option value="b1">Status 1</option>
-                                        <option value="b2">Status 2</option>
-                                        <option value="b3">Status 3</option>
-                                        <option value="b4">Status 4</option>
-                                    </select>
-                                    <select>
-                                        <option>Select Model</option>
-                                        <option value="b1">Model 1</option>
-                                        <option value="b2">Model 2</option>
-                                        <option value="b3">Model 3</option>
-                                        <option value="b4">Model 4</option>
-                                    </select>
-                                    <select>
-                                        <option>Select Year</option>
-                                        <option value="b1">Year 1</option>
-                                        <option value="b2">Year 2</option>
-                                        <option value="b3">Year 3</option>
-                                        <option value="b4">Year 4</option>
-                                    </select>
-                                    <select>
-                                        <option>Select Color</option>
-                                        <option value="b1">Color 1</option>
-                                        <option value="b2">Color 2</option>
-                                        <option value="b3">Color 3</option>
-                                        <option value="b4">Color 4</option>
-                                    </select>
-                                    <select>
-                                        <option>Select Type</option>
-                                        <option value="b1">Type 1</option>
-                                        <option value="b2">Type 2</option>
-                                        <option value="b3">Type 3</option>
-                                        <option value="b4">Type 4</option>
-                                    </select>
-                                    <div class="price_range">
-                                        <label>price range</label> <input type="text" id="range_24" name="ionRangeSlider" value="" />
+                        <form action="{{ route('search.vehicles') }}" method="GET">
+                            <div class="row">
+                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                    <div class="impl_select_boxes">
+                                        <select name="brand">
+                                            <option value="">Select Brand</option>
+                                            @foreach($brands as $brand)
+                                                <option value="{{ $brand->id }}">{{ $brand->name }}</option>
+                                            @endforeach
+                                        </select>
+                                        <select name="condition">
+                                            <option value="">Select Condition</option>
+                                            <option value="new">New</option>
+                                            <option value="used">Used</option>
+                                            <option value="pre-owned">Pre-owned</option>
+                                        </select>
+                                        <select name="model">
+                                            <option value="">Select Model</option>
+                                            @foreach($models as $model)
+                                                <option value="{{ $model->id }}">{{ $model->name }}</option>
+                                            @endforeach
+                                        </select>
+                                        <select name="category">
+                                            <option value="">Select Category</option>
+                                            @foreach($categories as $category)
+                                                <option value="{{ $category->id }}">{{ $category->name }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                    <div class="impl_search_btn">
+                                        <button type="submit" class="impl_btn">search vehicle</button>
                                     </div>
                                 </div>
-                                <div class="impl_search_btn">
-                                    <button class="impl_btn">search vehicle</button>
-                                </div>
                             </div>
-                        </div>
+                        </form>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-
     <!------ Welcome Wrapper Start ------>
     <div class="impl_welcome_wrapper impl_bottompadder80">
         <div class="container">
@@ -263,231 +243,43 @@
                         <h1>Featured Cars</h1>
                     </div>
                 </div>
-                <div class="col-lg-4 col-md-6">
-                    <div class="impl_fea_car_box">
-                        <div class="impl_fea_car_img">
-                            <img src="http://via.placeholder.com/370x320" alt="" class="img-fluid impl_frst_car_img" />
-                            <img src="http://via.placeholder.com/370x320/fff" alt="" class="img-fluid impl_hover_car_img" />
-                            <span class="impl_img_tag" title="compare"><i class="fa fa-exchange" aria-hidden="true"></i></span>
-                        </div>
-                        <div class="impl_fea_car_data">
-                            <h2><a href="purchase_new.html">Aurora</a></h2>
-                            <ul>
-                                <li><span class="impl_fea_title">model</span>
-                                    <span class="impl_fea_name">Aurora 811</span></li>
-                                <li><span class="impl_fea_title">Vehicle Status</span>
-                                    <span class="impl_fea_name">new</span></li>
-                                <li><span class="impl_fea_title">Color</span>
-                                    <span class="impl_fea_name">white</span></li>
-                            </ul>
-                            <div class="impl_fea_btn">
-                                <button class="impl_btn"><span class="impl_doller">$ 72000 </span><span class="impl_bnw">buy now</span></button>
+                @foreach($featuredVehicles as $vehicle)
+                    <div class="col-lg-4 col-md-6">
+                        <div class="impl_fea_car_box">
+                            <div class="impl_fea_car_img">
+                                @if($vehicle->images->isNotEmpty())
+                                    <img src="{{ asset('storage/' . $vehicle->images->first()->image_path) }}" alt="{{ $vehicle->title }}" class="img-fluid impl_frst_car_img" />
+                                    <img src="{{ asset('storage/' . $vehicle->images->first()->image_path) }}" alt="{{ $vehicle->title }}" class="img-fluid impl_hover_car_img" />
+                                @else
+                                    <img src="http://via.placeholder.com/370x320" alt="{{ $vehicle->title }}" class="img-fluid impl_frst_car_img" />
+                                    <img src="http://via.placeholder.com/370x320/fff" alt="{{ $vehicle->title }}" class="img-fluid impl_hover_car_img" />
+                                @endif
+                                <span class="impl_img_tag" title="compare"><i class="fa fa-exchange" aria-hidden="true"></i></span>
                             </div>
-                        </div>
-                    </div>
-                </div>
-                <!--2-->
-                <div class="col-lg-4 col-md-6">
-                    <div class="impl_fea_car_box">
-                        <div class="impl_fea_car_img">
-                            <img src="http://via.placeholder.com/370x320" alt="" class="img-fluid impl_frst_car_img" />
-                            <img src="http://via.placeholder.com/370x320/fff" alt="" class="img-fluid impl_hover_car_img" />
-                            <span class="impl_img_tag" title="compare"><i class="fa fa-exchange" aria-hidden="true"></i></span>
-                        </div>
-                        <div class="impl_fea_car_data">
-                            <h2> <a href="purchase_new.html">Serpent</a></h2>
-                            <ul>
-                                <li><span class="impl_fea_title">model</span>
-                                    <span class="impl_fea_name">Serpent 16.6 </span></li>
-                                <li><span class="impl_fea_title">Vehicle Status</span>
-                                    <span class="impl_fea_name">new</span></li>
-                                <li><span class="impl_fea_title">Color</span>
-                                    <span class="impl_fea_name">blue</span></li>
-                            </ul>
-                            <div class="impl_fea_btn">
-                                <button class="impl_btn"><span class="impl_doller">$ 72000 </span><span class="impl_bnw">buy now</span></button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <!--3-->
-                <div class="col-lg-4 col-md-6">
-                    <div class="impl_fea_car_box">
-                        <div class="impl_fea_car_img">
-                            <img src="http://via.placeholder.com/370x320" alt="" class="img-fluid impl_frst_car_img" />
-                            <img src="http://via.placeholder.com/370x320/fff" alt="" class="img-fluid impl_hover_car_img" />
-                            <span class="impl_img_tag" title="compare"><i class="fa fa-exchange" aria-hidden="true"></i></span>
-                        </div>
-                        <div class="impl_fea_car_data">
-                            <h2><a href="purchase_new.html">Basilisk</a></h2>
-                            <ul>
-                                <li><span class="impl_fea_title">model</span>
-                                    <span class="impl_fea_name">Basilisk 811</span></li>
-                                <li><span class="impl_fea_title">Vehicle Status</span>
-                                    <span class="impl_fea_name">new</span></li>
-                                <li><span class="impl_fea_title">Color</span>
-                                    <span class="impl_fea_name">white</span></li>
-                            </ul>
-                            <div class="impl_fea_btn">
-                                <button class="impl_btn"><span class="impl_doller">$ 72000 </span><span class="impl_bnw">buy now</span></button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <!--4-->
-                <div class="col-lg-4 col-md-6">
-                    <div class="impl_fea_car_box">
-                        <div class="impl_fea_car_img">
-                            <img src="http://via.placeholder.com/370x320" alt="" class="img-fluid impl_frst_car_img" />
-                            <img src="http://via.placeholder.com/370x320/fff" alt="" class="img-fluid impl_hover_car_img" />
-                            <span class="impl_img_tag" title="compare"><i class="fa fa-exchange" aria-hidden="true"></i></span>
-                        </div>
-                        <div class="impl_fea_car_data">
-                            <h2><a href="purchase_used.html">Mirage</a></h2>
-                            <ul>
-                                <li><span class="impl_fea_title">model</span>
-                                    <span class="impl_fea_name">Mirage</span></li>
-                                <li><span class="impl_fea_title">Vehicle Status</span>
-                                    <span class="impl_fea_name">old</span></li>
-                                <li><span class="impl_fea_title">year</span>
-                                    <span class="impl_fea_name">2016</span></li>
-                                <li><span class="impl_fea_title">Color</span>
-                                    <span class="impl_fea_name">white</span></li>
-                            </ul>
-                            <div class="impl_fea_btn">
-                                <button class="impl_btn"><span class="impl_doller">$ 72000 </span><span class="impl_bnw">buy now</span></button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <!--5-->
-                <div class="col-lg-4 col-md-6">
-                    <div class="impl_fea_car_box">
-                        <div class="impl_fea_car_img">
-                            <img src="http://via.placeholder.com/370x320" alt="" class="img-fluid impl_frst_car_img" />
-                            <img src="http://via.placeholder.com/370x320/fff" alt="" class="img-fluid impl_hover_car_img" />
-                            <span class="impl_img_tag" title="compare"><i class="fa fa-exchange" aria-hidden="true"></i></span>
-                        </div>
-                        <div class="impl_fea_car_data">
-                            <h2><a href="purchase_used.html"> Realm</a></h2>
-                            <ul>
-                                <li><span class="impl_fea_title">model</span>
-                                    <span class="impl_fea_name">Realm 16.6</span></li>
-                                <li><span class="impl_fea_title">Vehicle Status</span>
-                                    <span class="impl_fea_name">old</span></li>
-                                <li><span class="impl_fea_title">year</span>
-                                    <span class="impl_fea_name">2015</span></li>
-                                <li><span class="impl_fea_title">Color</span>
-                                    <span class="impl_fea_name">black</span></li>
-                            </ul>
-                            <div class="impl_fea_btn">
-                                <button class="impl_btn"><span class="impl_doller">$ 72000 </span><span class="impl_bnw">buy now</span></button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <!--6-->
-                <div class="col-lg-4 col-md-6">
-                    <div class="impl_fea_car_box">
-                        <div class="impl_fea_car_img">
-                            <img src="http://via.placeholder.com/370x320" alt="" class="img-fluid impl_frst_car_img" />
-                            <img src="http://via.placeholder.com/370x320/fff" alt="" class="img-fluid impl_hover_car_img" />
-                            <span class="impl_img_tag" title="compare"><i class="fa fa-exchange" aria-hidden="true"></i></span>
-                        </div>
-                        <div class="impl_fea_car_data">
-                            <h2><a href="purchase_used.html"> Empire</a></h2>
-                            <ul>
-                                <li><span class="impl_fea_title">model</span>
-                                    <span class="impl_fea_name">Empire Z06</span></li>
-                                <li><span class="impl_fea_title">Vehicle Status</span>
-                                    <span class="impl_fea_name">old</span></li>
-                                <li><span class="impl_fea_title">year</span>
-                                    <span class="impl_fea_name">2015</span></li>
-                                <li><span class="impl_fea_title">Color</span>
-                                    <span class="impl_fea_name">yellow</span></li>
-                            </ul>
-                            <div class="impl_fea_btn">
-                                <button class="impl_btn"><span class="impl_doller">$ 72000 </span><span class="impl_bnw">buy now</span></button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!------ Latest Blog Section Start ------>
-    <div class="impl_blog_wrapper">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-12 col-md-12">
-                    <div class="impl_heading">
-                        <h1>Latest Blogs</h1>
-                    </div>
-                </div>
-                <div class="col-lg-12 col-md-12">
-                    <div class="impl_blog_box">
-                        <div class="row">
-                            <div class="col-lg-4 col-md-12">
-                                <div class="impl_post_img">
-                                    <img src="http://via.placeholder.com/370x303" alt="" class="img-fluid" />
-                                    <span class="impl_pst_date">
-									16 sep
-								</span>
-                                    <div class="impl_pst_img_icon"><a href="#" class="fa fa-link"></a></div>
-                                </div>
-                            </div>
-                            <div class="col-lg-8 col-md-12">
-                                <div class="impl_post_data">
-                                    <h2><a href="blog_left_sidebar.html">Stories Behind Car Brand Names </a></h2>
-                                    <p>It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for 'lorem ipsum' will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like). There are many variations of passages of Lorem Ipsum available</p>
-                                    <div class="impl_pst_info">
-                                        <div class="impl_pst_admin">
-                                            <span><a href="#">admin</a></span>
-                                            <span><a href="#">16 September 2017</a></span>
-                                        </div>
-                                        <ul class="impl_pst_views">
-                                            <li><a href="#"><i class="fa fa-eye" aria-hidden="true"></i> 413</a></li>
-                                            <li><a href="#"><i class="fa fa-comments" aria-hidden="true"></i> 251</a></li>
-                                            <li><a href="#"><i class="fa fa-share-alt" aria-hidden="true"></i> 5</a></li>
-                                        </ul>
-                                    </div>
+                            <div class="impl_fea_car_data">
+                                <h2><a href="#">{{ $vehicle->title }}</a></h2>
+                                <ul>
+                                    <li><span class="impl_fea_title">model</span>
+                                        <span class="impl_fea_name">{{ $vehicle->model->name }}</span></li>
+                                    <li><span class="impl_fea_title">Vehicle Status</span>
+                                        <span class="impl_fea_name">{{ $vehicle->condition }}</span></li>
+                                    @if($vehicle->condition != 'new')
+                                        <li><span class="impl_fea_title">Year</span>
+                                            <span class="impl_fea_name">{{ $vehicle->year }}</span></li>
+                                    @endif
+                                    <li><span class="impl_fea_title">Fuel Type</span>
+                                        <span class="impl_fea_name">{{ $vehicle->fuel_type }}</span></li>
+                                </ul>
+                                <div class="impl_fea_btn">
+                                    <button class="impl_btn">
+                                        <span class="impl_doller">${{ number_format($vehicle->price, 2) }}</span>
+                                        <span class="impl_bnw">buy now</span>
+                                    </button>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <!--Blog 2-->
-                    <div class="impl_blog_box impl_blog_right">
-                        <div class="row">
-                            <div class="col-lg-4 col-md-12 push-lg-8">
-                                <div class="impl_post_img">
-                                    <img src="http://via.placeholder.com/370x303" alt="" class="img-fluid" />
-                                    <span class="impl_pst_date">
-									16 sep
-								</span>
-                                    <div class="impl_pst_img_icon"><a href="#"><i class="fa fa-link" aria-hidden="true"></i></a></div>
-                                </div>
-                            </div>
-                            <div class="col-lg-8 col-md-12 pull-lg-4">
-                                <div class="impl_post_data">
-                                    <h2><a href="blog_left_sidebar.html">Stories Behind Car Brand Names </a></h2>
-                                    <p>It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for 'lorem ipsum' will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like). There are many variations of passages of Lorem Ipsum available</p>
-                                    <div class="impl_pst_info">
-                                        <div class="impl_pst_admin">
-                                            <span><a href="#">admin</a></span>
-                                            <span><a href="#">16 September 2017</a></span>
-
-                                        </div>
-                                        <ul class="impl_pst_views">
-                                            <li><a href="#"><i class="fa fa-eye" aria-hidden="true"></i> 413</a></li>
-                                            <li><a href="#"><i class="fa fa-comments" aria-hidden="true"></i> 251</a></li>
-                                            <li><a href="#"><i class="fa fa-share-alt" aria-hidden="true"></i> 5</a></li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                @endforeach
             </div>
         </div>
     </div>

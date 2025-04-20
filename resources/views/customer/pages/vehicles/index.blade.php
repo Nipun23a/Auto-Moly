@@ -5,10 +5,10 @@
         <div class="container">
             <div class="row">
                 <div class="col-lg-12 col-md-12">
-                    <h1>purchase</h1>
+                    <h1>{{ isset($condition) ? ucfirst($condition) . ' Vehicles' : 'Vehicles' }}</h1>
                     <ol class="breadcrumb">
-                        <li class="breadcrumb-item"><a href="#">Home</a></li>
-                        <li class="breadcrumb-item active">purchase</li>
+                        <li class="breadcrumb-item"><a href="{{route('home')}}">Home</a></li>
+                        <li class="breadcrumb-item active">{{ isset($condition) ? ucfirst($condition) . ' Vehicles' : 'Vehicles' }}</li>
                     </ol>
                 </div>
             </div>
@@ -20,22 +20,16 @@
             <div class="row">
                 <div class="col-lg-6 col-md-6">
                     <div class="impl_sorting_text custom_select">
-                        <span class="impl_show"> Showing 9 of 68 Results</span>
+                        <span class="impl_show"> Showing {{ $vehicles->firstItem() }} - {{ $vehicles->lastItem() }} of {{ $totalVehicles }} Results</span>
                         <div class="impl_select_wrapper">
                             <span>sort by</span>
-                            <select>
-                                <option value="1">Newest</option>
-                                <option value="2">New</option>
-                                <option value="3">Old</option>
-                                <option value="4">Oldest</option>
+                            <select onchange="location = this.value;">
+                                <option value="{{ request()->fullUrlWithQuery(['sort' => 'newest']) }}" {{ request('sort') == 'newest' ? 'selected' : '' }}>Newest</option>
+                                <option value="{{ request()->fullUrlWithQuery(['sort' => 'oldest']) }}" {{ request('sort') == 'oldest' ? 'selected' : '' }}>Oldest</option>
+                                <option value="{{ request()->fullUrlWithQuery(['sort' => 'price_high']) }}" {{ request('sort') == 'price_high' ? 'selected' : '' }}>Price High to Low</option>
+                                <option value="{{ request()->fullUrlWithQuery(['sort' => 'price_low']) }}" {{ request('sort') == 'price_low' ? 'selected' : '' }}>Price Low to High</option>
                             </select>
                         </div>
-                    </div>
-                </div>
-                <div class="col-lg-6 col-md-6">
-                    <div class="impl_category_type">
-                        <a href="purchase_new.html" class="impl_btn active">new car</a>
-                        <a href="purchase_used.html" class="impl_btn impl_used_car">used car</a>
                     </div>
                 </div>
                 <div class="col-lg-12 col-md-12">
@@ -44,469 +38,109 @@
                             <div class="col-lg-3 col-md-4">
                                 <div class="impl_sidebar">
                                     <div class="impl_product_search widget woocommerce">
-                                        <div class="impl_footer_subs">
-                                            <input type="text" class="form-control" placeholder="Search...">
-                                            <button class="foo_subs_btn"><i class="fa fa-search" aria-hidden="true"></i></button>
-                                        </div>
+                                        <form action="{{ route('customer.vehicles.search') }}" method="GET">
+                                            <div class="impl_footer_subs">
+                                                <input type="text" name="query" class="form-control" placeholder="Search..." value="{{ request('query') }}">
+                                                <button type="submit" class="foo_subs_btn"><i class="fa fa-search" aria-hidden="true"></i></button>
+                                            </div>
+                                        </form>
                                     </div>
                                     <!--Brands-->
                                     <div class="impl_product_brand widget woocommerce">
                                         <h2 class="widget-title">brands</h2>
-                                        <ul>
-                                            <li>
-                                                <label class="brnds_check_label">
-                                                    Paradox
-                                                    <input type="checkbox" name="check">
-                                                    <span class="label-text"></span>
-                                                </label>
-                                            </li>
-                                            <li>
-                                                <label class="brnds_check_label">
-                                                    Voyage
-                                                    <input type="checkbox" name="check">
-                                                    <span class="label-text"></span>
-                                                </label>
-                                            </li>
-                                            <li>
-                                                <label class="brnds_check_label">
-                                                    Passion
-                                                    <input type="checkbox" name="check">
-                                                    <span class="label-text"></span>
-                                                </label>
-                                            </li>
-                                            <li>
-                                                <label class="brnds_check_label">
-                                                    Curiosity
-                                                    <input type="checkbox" name="check">
-                                                    <span class="label-text"></span>
-                                                </label>
-                                            </li>
-                                            <li>
-                                                <label class="brnds_check_label">
-                                                    Ivory
-                                                    <input type="checkbox" name="check">
-                                                    <span class="label-text"></span>
-                                                </label>
-                                            </li>
-                                            <li>
-                                                <label class="brnds_check_label">
-                                                    Dawn
-                                                    <input type="checkbox" name="check">
-                                                    <span class="label-text"></span>
-                                                </label>
-                                            </li>
-                                            <li>
-                                                <label class="brnds_check_label">
-                                                    Temper
-                                                    <input type="checkbox" name="check">
-                                                    <span class="label-text"></span>
-                                                </label>
-                                            </li>
-                                            <li>
-                                                <label class="brnds_check_label">
-                                                    Thunder
-                                                    <input type="checkbox" name="check">
-                                                    <span class="label-text"></span>
-                                                </label>
-                                            </li>
-                                            <li>
-                                                <label class="brnds_check_label">
-                                                    Blade
-                                                    <input type="checkbox" name="check">
-                                                    <span class="label-text"></span>
-                                                </label>
-                                            </li>
-                                            <li>
-                                                <label class="brnds_check_label">
-                                                    Origin
-                                                    <input type="checkbox" name="check">
-                                                    <span class="label-text"></span>
-                                                </label>
-                                            </li>
-                                            <li>
-                                                <label class="brnds_check_label">
-                                                    Titan
-                                                    <input type="checkbox" name="check">
-                                                    <span class="label-text"></span>
-                                                </label>
-                                            </li>
-                                            <li>
-                                                <label class="brnds_check_label">
-                                                    Dominion
-                                                    <input type="checkbox" name="check">
-                                                    <span class="label-text"></span>
-                                                </label>
-                                            </li>
-                                            <li>
-                                                <label class="brnds_check_label">
-                                                    Ferocity
-                                                    <input type="checkbox" name="check">
-                                                    <span class="label-text"></span>
-                                                </label>
-                                            </li>
-                                            <li>
-                                                <label class="brnds_check_label">
-                                                    Tempest
-                                                    <input type="checkbox" name="check">
-                                                    <span class="label-text"></span>
-                                                </label>
-                                            </li>
-                                            <li>
-                                                <label class="brnds_check_label">
-                                                    Flow
-                                                    <input type="checkbox" name="check">
-                                                    <span class="label-text"></span>
-                                                </label>
-                                            </li>
-                                            <li>
-                                                <label class="brnds_check_label">
-                                                    Prime
-                                                    <input type="checkbox" name="check">
-                                                    <span class="label-text"></span>
-                                                </label>
-                                            </li>
-                                            <li>
-                                                <label class="brnds_check_label">
-                                                    Grit
-                                                    <input type="checkbox" name="check">
-                                                    <span class="label-text"></span>
-                                                </label>
-                                            </li>
-                                            <li>
-                                                <label class="brnds_check_label">
-                                                    Nimbus
-                                                    <input type="checkbox" name="check">
-                                                    <span class="label-text"></span>
-                                                </label>
-                                            </li>
-                                            <li>
-                                                <label class="brnds_check_label">
-                                                    Essence
-                                                    <input type="checkbox" name="check">
-                                                    <span class="label-text"></span>
-                                                </label>
-                                            </li>
-                                            <li>
-                                                <label class="brnds_check_label">
-                                                    Aura
-                                                    <input type="checkbox" name="check">
-                                                    <span class="label-text"></span>
-                                                </label>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                    <!--Colors-->
-                                    <div class="impl_product_color widget woocommerce">
-                                        <h2 class="widget-title">color</h2>
-                                        <ul>
-                                            <li>
-                                                <label class="brnds_check_label">
-                                                    black
-                                                    <input type="checkbox" name="check">
-                                                    <span class="label-text"></span>
-                                                </label>
-                                            </li>
-                                            <li>
-                                                <label class="brnds_check_label">
-                                                    blue
-                                                    <input type="checkbox" name="check">
-                                                    <span class="label-text"></span>
-                                                </label>
-                                            </li>
-                                            <li>
-                                                <label class="brnds_check_label">
-                                                    white
-                                                    <input type="checkbox" name="check">
-                                                    <span class="label-text"></span>
-                                                </label>
-                                            </li>
-                                            <li>
-                                                <label class="brnds_check_label">
-                                                    yellow
-                                                    <input type="checkbox" name="check">
-                                                    <span class="label-text"></span>
-                                                </label>
-                                            </li>
-                                            <li>
-                                                <label class="brnds_check_label">
-                                                    red
-                                                    <input type="checkbox" name="check">
-                                                    <span class="label-text"></span>
-                                                </label>
-                                            </li>
-                                            <li>
-                                                <label class="brnds_check_label">
-                                                    grey
-                                                    <input type="checkbox" name="check">
-                                                    <span class="label-text"></span>
-                                                </label>
-                                            </li>
-                                            <li>
-                                                <label class="brnds_check_label">
-                                                    brown
-                                                    <input type="checkbox" name="check">
-                                                    <span class="label-text"></span>
-                                                </label>
-                                            </li>
-                                            <li>
-                                                <label class="brnds_check_label">
-                                                    orange
-                                                    <input type="checkbox" name="check">
-                                                    <span class="label-text"></span>
-                                                </label>
-                                            </li>
-                                        </ul>
+                                        <form id="brand-filter-form" action="{{ route('customer.vehicles.index') }}" method="GET">
+                                            <input type="hidden" name="sort" value="{{ request('sort') }}">
+                                            <ul>
+                                                @foreach($brands as $brand)
+                                                    <li>
+                                                        <label class="brnds_check_label">
+                                                            {{ $brand->name }}
+                                                            <input type="checkbox" name="brand[]" value="{{ $brand->id }}"
+                                                                   {{ in_array($brand->id, (array)request('brand')) ? 'checked' : '' }}
+                                                                   onchange="document.getElementById('brand-filter-form').submit()">
+                                                            <span class="label-text"></span>
+                                                        </label>
+                                                    </li>
+                                                @endforeach
+                                            </ul>
+                                        </form>
                                     </div>
                                     <!--Price Range-->
                                     <div class="impl_product_price widget woocommerce">
                                         <h2 class="widget-title">price range</h2>
                                         <div class="price_range">
-                                            <input type="text" id="range_24" name="ionRangeSlider" value="" />
+                                            <input type="text" id="range_24" name="ionRangeSlider" value=""
+                                                   data-min="{{ $minPrice }}"
+                                                   data-max="{{ $maxPrice }}"
+                                                   data-from="{{ request('price_min') ?? $minPrice }}"
+                                                   data-to="{{ request('price_max') ?? $maxPrice }}" />
                                         </div>
                                     </div>
                                     <!--Car Type-->
                                     <div class="impl_product_type widget woocommerce">
                                         <h2 class="widget-title">car type</h2>
-                                        <ul>
-                                            <li><a href="#">Hatchback</a></li>
-                                            <li><a href="#">Sedan</a></li>
-                                            <li><a href="#">MPV</a></li>
-                                            <li><a href="#">SUV</a></li>
-                                            <li><a href="#">Couple</a></li>
-                                            <li><a href="#">Convertible</a></li>
-                                        </ul>
+                                        <form id="category-filter-form" action="{{ route('customer.vehicles.index') }}" method="GET">
+                                            <input type="hidden" name="sort" value="{{ request('sort') }}">
+                                            <ul>
+                                                @foreach($categories as $category)
+                                                    <li>
+                                                        <a href="#" onclick="addCategoryFilter({{ $category->id }}); return false;">{{ $category->name }}</a>
+                                                    </li>
+                                                @endforeach
+                                            </ul>
+                                            <input type="hidden" name="category" id="category-filter" value="{{ request('category') }}">
+                                        </form>
                                     </div>
                                 </div>
                             </div>
                             <div class="col-lg-9 col-md-8">
                                 <div class="row">
-                                    <div class="col-lg-4 col-md-6">
-                                        <div class="impl_fea_car_box">
-                                            <div class="impl_fea_car_img">
-                                                <img src="http://via.placeholder.com/370x320" alt="" class="img-fluid impl_frst_car_img" />
-                                                <img src="http://via.placeholder.com/370x320/fff" alt="" class="img-fluid impl_hover_car_img" />
-                                                <span class="impl_img_tag" title="compare"><a href="compare.html"><i class="fa fa-exchange" aria-hidden="true"></i></a></span>
-                                            </div>
-                                            <div class="impl_fea_car_data">
-                                                <h2><a href="purchase_new_single.html">Aurora</a></h2>
-                                                <ul>
-                                                    <li><span class="impl_fea_title">model</span>
-                                                        <span class="impl_fea_name">Aurora 811</span></li>
-                                                    <li><span class="impl_fea_title">Vehicle Status</span>
-                                                        <span class="impl_fea_name">new</span></li>
-                                                    <li><span class="impl_fea_title">Color</span>
-                                                        <span class="impl_fea_name">white</span></li>
-                                                </ul>
-                                                <div class="impl_fea_btn">
-                                                    <button class="impl_btn"><span class="impl_doller">$ 72000 </span><span class="impl_bnw">buy now</span></button>
+                                    @forelse($vehicles as $vehicle)
+                                        <div class="col-lg-4 col-md-6">
+                                            <div class="impl_fea_car_box">
+                                                <div class="impl_fea_car_img">
+                                                    @if($vehicle->images->where('is_primary', true)->first())
+                                                        <img src="{{ asset('storage/' . $vehicle->images->where('is_primary', true)->first()->image_path) }}" alt="{{ $vehicle->title }}" class="img-fluid impl_frst_car_img" />
+                                                        <img src="{{ asset('storage/' . $vehicle->images->where('is_primary', true)->first()->image_path) }}" alt="{{ $vehicle->title }}" class="img-fluid impl_hover_car_img" />
+                                                    @else
+                                                        <img src="{{ asset('images/placeholder-car.jpg') }}" alt="{{ $vehicle->title }}" class="img-fluid impl_frst_car_img" />
+                                                        <img src="{{ asset('images/placeholder-car.jpg') }}" alt="{{ $vehicle->title }}" class="img-fluid impl_hover_car_img" />
+                                                    @endif
+                                                    <span class="impl_img_tag" title="compare">
+                                                        <a href="{{ route('customer.vehicles.compare', ['vehicles[]' => $vehicle->id]) }}">
+                                                            <i class="fa fa-exchange" aria-hidden="true"></i>
+                                                        </a>
+                                                    </span>
+                                                </div>
+                                                <div class="impl_fea_car_data">
+                                                    <h2><a href="{{ route('customer.vehicles.show', $vehicle->slug) }}">{{ $vehicle->title }}</a></h2>
+                                                    <ul>
+                                                        <li><span class="impl_fea_title">model</span>
+                                                            <span class="impl_fea_name">{{ $vehicle->model->name }}</span></li>
+                                                        <li><span class="impl_fea_title">Vehicle Status</span>
+                                                            <span class="impl_fea_name">{{ ucfirst($vehicle->condition) }}</span></li>
+                                                        <li><span class="impl_fea_title">Brand</span>
+                                                            <span class="impl_fea_name">{{ $vehicle->model->brand->name }}</span></li>
+                                                    </ul>
+                                                    <div class="impl_fea_btn">
+                                                        <button class="impl_btn">
+                                                            <span class="impl_doller">${{ number_format($vehicle->price) }}</span>
+                                                            <span class="impl_bnw">buy now</span>
+                                                        </button>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
-                                    <!--2-->
-                                    <div class="col-lg-4 col-md-6">
-                                        <div class="impl_fea_car_box">
-                                            <div class="impl_fea_car_img">
-                                                <img src="http://via.placeholder.com/370x320" alt="" class="img-fluid impl_frst_car_img" />
-                                                <img src="http://via.placeholder.com/370x320/fff" alt="" class="img-fluid impl_hover_car_img" />
-                                                <span class="impl_img_tag" title="compare"><a href="compare.html"><i class="fa fa-exchange" aria-hidden="true"></i></a></span>
-                                            </div>
-                                            <div class="impl_fea_car_data">
-                                                <h2><a href="purchase_new_single.html">Serpent</a></h2>
-                                                <ul>
-                                                    <li><span class="impl_fea_title">model</span>
-                                                        <span class="impl_fea_name">Serpent EB </span></li>
-                                                    <li><span class="impl_fea_title">Vehicle Status</span>
-                                                        <span class="impl_fea_name">new</span></li>
-                                                    <li><span class="impl_fea_title">Color</span>
-                                                        <span class="impl_fea_name">blue</span></li>
-                                                </ul>
-                                                <div class="impl_fea_btn">
-                                                    <button class="impl_btn"><span class="impl_doller">$ 72000 </span><span class="impl_bnw">buy now</span></button>
-                                                </div>
-                                            </div>
+                                    @empty
+                                        <div class="col-12">
+                                            <div class="alert alert-info">No vehicles found matching your criteria.</div>
                                         </div>
-                                    </div>
-                                    <!--3-->
-                                    <div class="col-lg-4 col-md-6">
-                                        <div class="impl_fea_car_box">
-                                            <div class="impl_fea_car_img">
-                                                <img src="http://via.placeholder.com/370x320" alt="" class="img-fluid impl_frst_car_img" />
-                                                <img src="http://via.placeholder.com/370x320/fff" alt="" class="img-fluid impl_hover_car_img" />
-                                                <span class="impl_img_tag" title="compare"><a href="compare.html"><i class="fa fa-exchange" aria-hidden="true"></i></a></span>
-                                            </div>
-                                            <div class="impl_fea_car_data">
-                                                <h2><a href="purchase_new_single.html">Basilisk</a></h2>
-                                                <ul>
-                                                    <li><span class="impl_fea_title">model</span>
-                                                        <span class="impl_fea_name">Basilisk 811</span></li>
-                                                    <li><span class="impl_fea_title">Vehicle Status</span>
-                                                        <span class="impl_fea_name">new</span></li>
-                                                    <li><span class="impl_fea_title">Color</span>
-                                                        <span class="impl_fea_name">white</span></li>
-                                                </ul>
-                                                <div class="impl_fea_btn">
-                                                    <button class="impl_btn"><span class="impl_doller">$ 72000 </span><span class="impl_bnw">buy now</span></button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <!--4-->
-                                    <div class="col-lg-4 col-md-6">
-                                        <div class="impl_fea_car_box">
-                                            <div class="impl_fea_car_img">
-                                                <img src="http://via.placeholder.com/370x320" alt="" class="img-fluid impl_frst_car_img" />
-                                                <img src="http://via.placeholder.com/370x320/fff" alt="" class="img-fluid impl_hover_car_img" />
-                                                <span class="impl_img_tag" title="compare"><a href="compare.html"><i class="fa fa-exchange" aria-hidden="true"></i></a></span>
-                                            </div>
-                                            <div class="impl_fea_car_data">
-                                                <h2><a href="purchase_new_single.html">Mirage</a></h2>
-                                                <ul>
-                                                    <li><span class="impl_fea_title">model</span>
-                                                        <span class="impl_fea_name">Mirage</span></li>
-                                                    <li><span class="impl_fea_title">Vehicle Status</span>
-                                                        <span class="impl_fea_name">new</span></li>
-                                                    <li><span class="impl_fea_title">Color</span>
-                                                        <span class="impl_fea_name">white</span></li>
-                                                </ul>
-                                                <div class="impl_fea_btn">
-                                                    <button class="impl_btn"><span class="impl_doller">$ 72000 </span><span class="impl_bnw">buy now</span></button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <!--5-->
-                                    <div class="col-lg-4 col-md-6">
-                                        <div class="impl_fea_car_box">
-                                            <div class="impl_fea_car_img">
-                                                <img src="http://via.placeholder.com/370x320" alt="" class="img-fluid impl_frst_car_img" />
-                                                <img src="http://via.placeholder.com/370x320/fff" alt="" class="img-fluid impl_hover_car_img" />
-                                                <span class="impl_img_tag" title="compare"><a href="compare.html"><i class="fa fa-exchange" aria-hidden="true"></i></a></span>
-                                            </div>
-                                            <div class="impl_fea_car_data">
-                                                <h2><a href="purchase_new_single.html"> Realm</a></h2>
-                                                <ul>
-                                                    <li><span class="impl_fea_title">model</span>
-                                                        <span class="impl_fea_name">Realm EB </span></li>
-                                                    <li><span class="impl_fea_title">Vehicle Status</span>
-                                                        <span class="impl_fea_name">new</span></li>
-                                                    <li><span class="impl_fea_title">Color</span>
-                                                        <span class="impl_fea_name">black</span></li>
-                                                </ul>
-                                                <div class="impl_fea_btn">
-                                                    <button class="impl_btn"><span class="impl_doller">$ 72000 </span><span class="impl_bnw">buy now</span></button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <!--6-->
-                                    <div class="col-lg-4 col-md-6">
-                                        <div class="impl_fea_car_box">
-                                            <div class="impl_fea_car_img">
-                                                <img src="http://via.placeholder.com/370x320" alt="" class="img-fluid impl_frst_car_img" />
-                                                <img src="http://via.placeholder.com/370x320/ffffff" alt="" class="img-fluid impl_hover_car_img" />
-                                                <span class="impl_img_tag" title="compare"><a href="compare.html"><i class="fa fa-exchange" aria-hidden="true"></i></a></span>
-                                            </div>
-                                            <div class="impl_fea_car_data">
-                                                <h2><a href="purchase_new_single.html"> Empire</a></h2>
-                                                <ul>
-                                                    <li><span class="impl_fea_title">model</span>
-                                                        <span class="impl_fea_name">Empire</span></li>
-                                                    <li><span class="impl_fea_title">Vehicle Status</span>
-                                                        <span class="impl_fea_name">new</span></li>
-                                                    <li><span class="impl_fea_title">Color</span>
-                                                        <span class="impl_fea_name">yellow</span></li>
-                                                </ul>
-                                                <div class="impl_fea_btn">
-                                                    <button class="impl_btn"><span class="impl_doller">$ 72000 </span><span class="impl_bnw">buy now</span></button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <!--7-->
-                                    <div class="col-lg-4 col-md-6">
-                                        <div class="impl_fea_car_box">
-                                            <div class="impl_fea_car_img">
-                                                <img src="http://via.placeholder.com/370x320" alt="" class="img-fluid impl_frst_car_img" />
-                                                <img src="http://via.placeholder.com/370x320/fff" alt="" class="img-fluid impl_hover_car_img" />
-                                                <span class="impl_img_tag" title="compare"><a href="compare.html"><i class="fa fa-exchange" aria-hidden="true"></i></a></span>
-                                            </div>
-                                            <div class="impl_fea_car_data">
-                                                <h2><a href="purchase_new_single.html">Universe</a></h2>
-                                                <ul>
-                                                    <li><span class="impl_fea_title">model</span>
-                                                        <span class="impl_fea_name">Universe 	</span></li>
-                                                    <li><span class="impl_fea_title">Vehicle Status</span>
-                                                        <span class="impl_fea_name">new</span></li>
-                                                    <li><span class="impl_fea_title">Color</span>
-                                                        <span class="impl_fea_name">yellow</span></li>
-                                                </ul>
-                                                <div class="impl_fea_btn">
-                                                    <button class="impl_btn"><span class="impl_doller">$ 72000 </span><span class="impl_bnw">buy now</span></button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <!--8-->
-                                    <div class="col-lg-4 col-md-6">
-                                        <div class="impl_fea_car_box">
-                                            <div class="impl_fea_car_img">
-                                                <img src="http://via.placeholder.com/370x320" alt="" class="img-fluid impl_frst_car_img" />
-                                                <img src="http://via.placeholder.com/370x320/fff" alt="" class="img-fluid impl_hover_car_img" />
-                                                <span class="impl_img_tag" title="compare"><a href="compare.html"><i class="fa fa-exchange" aria-hidden="true"></i></a></span>
-                                            </div>
-                                            <div class="impl_fea_car_data">
-                                                <h2><a href="purchase_new_single.html">Dawn</a></h2>
-                                                <ul>
-                                                    <li><span class="impl_fea_title">model</span>
-                                                        <span class="impl_fea_name">Dawn Z06</span></li>
-                                                    <li><span class="impl_fea_title">Vehicle Status</span>
-                                                        <span class="impl_fea_name">new</span></li>
-                                                    <li><span class="impl_fea_title">Color</span>
-                                                        <span class="impl_fea_name">yellow</span></li>
-                                                </ul>
-                                                <div class="impl_fea_btn">
-                                                    <button class="impl_btn"><span class="impl_doller">$ 72000 </span><span class="impl_bnw">buy now</span></button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <!--9-->
-                                    <div class="col-lg-4 col-md-6">
-                                        <div class="impl_fea_car_box">
-                                            <div class="impl_fea_car_img">
-                                                <img src="http://via.placeholder.com/370x320" alt="" class="img-fluid impl_frst_car_img" />
-                                                <img src="http://via.placeholder.com/370x320/fff" alt="" class="img-fluid impl_hover_car_img" />
-                                                <span class="impl_img_tag" title="compare"><a href="compare.html"><i class="fa fa-exchange" aria-hidden="true"></i></a></span>
-                                            </div>
-                                            <div class="impl_fea_car_data">
-                                                <h2><a href="purchase_new_single.html">Nissan</a></h2>
-                                                <ul>
-                                                    <li><span class="impl_fea_title">model</span>
-                                                        <span class="impl_fea_name">Crux Z06</span></li>
-                                                    <li><span class="impl_fea_title">Vehicle Status</span>
-                                                        <span class="impl_fea_name">new</span></li>
-                                                    <li><span class="impl_fea_title">Color</span>
-                                                        <span class="impl_fea_name">yellow</span></li>
-                                                </ul>
-                                                <div class="impl_fea_btn">
-                                                    <button class="impl_btn"><span class="impl_doller">$ 72000 </span><span class="impl_bnw">buy now</span></button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
+                                    @endforelse
+
                                     <!--pagination start-->
                                     <div class="col-lg-12 col-md-12">
                                         <div class="impl_pagination_wrapper">
-                                            <nav aria-label="Page navigation example">
-                                                <ul class="pagination">
-                                                    <li class="page-item"><a class="page-link" href="#"><i class="fa fa-angle-left" aria-hidden="true"></i></a></li>
-                                                    <li class="page-item"><a class="page-link" href="#">1</a></li>
-                                                    <li class="page-item"><a class="page-link active" href="#">2</a></li>
-                                                    <li class="page-item"><a class="page-link" href="#">3</a></li>
-                                                    <li class="page-item"><a class="page-link" href="#"><i class="fa fa-angle-right" aria-hidden="true"></i></a></li>
-                                                </ul>
-                                            </nav>
+                                            {{ $vehicles->links() }}
                                         </div>
                                     </div>
                                 </div>
@@ -518,3 +152,32 @@
         </div>
     </div>
 @endsection
+
+@push('scripts')
+    <script>
+        // Price range slider initialization
+        $(document).ready(function() {
+            $("#range_24").ionRangeSlider({
+                type: "double",
+                min: $("#range_24").data('min'),
+                max: $("#range_24").data('max'),
+                from: $("#range_24").data('from'),
+                to: $("#range_24").data('to'),
+                prefix: "$",
+                grid: true,
+                onFinish: function(data) {
+                    window.location.href = "{{ request()->url() }}?price_min=" + data.from + "&price_max=" + data.to +
+                        "&sort={{ request('sort') }}" +
+                        "{{ request('brand') ? '&brand[]=' . implode('&brand[]=', (array)request('brand')) : '' }}" +
+                        "{{ request('category') ? '&category=' . request('category') : '' }}";
+                }
+            });
+        });
+
+        // Add category filter
+        function addCategoryFilter(categoryId) {
+            document.getElementById('category-filter').value = categoryId;
+            document.getElementById('category-filter-form').submit();
+        }
+    </script>
+@endpush

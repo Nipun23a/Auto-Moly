@@ -31,7 +31,7 @@ class Vehicle extends Model
     }
 
     public function model(){
-        return $this->belongsTo(Model::class);
+        return $this->belongsTo(CarModel::class);
     }
 
     public function images(): \Illuminate\Database\Eloquent\Relations\HasMany

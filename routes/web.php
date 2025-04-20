@@ -1,15 +1,11 @@
 <?php
 
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\VehicleController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
-    return view('customer.pages.home');
-})->name('home');
-// Show Login Page
-Route::get('/login',[UserController::class,'loginPage'])->name('login.page');
-//Show Registration Page
-Route::get('/register',[UserController::class,'registerPage'])->name('register.page');
+Route::get('/', [\App\Http\Controllers\DashboardController::class, 'index'])->name('home');
+
 // Handle Login
 Route::post('/login',[UserController::class,'login'])->name('login');
 // Handle Registration
@@ -29,9 +25,6 @@ Route::get('/contact',function(){
 Route::get('/scanner',function (){
     return view('customer.pages.scanner');
 })->name('scanner');
-Route::get('/vehicle',function (){
-    return view('customer.pages.vehicles.index');
-})->name('vehicle');
 Route::get('/car-details',function (){
     return view('customer.pages.cars.car-single');
 })->name('car-details');
@@ -44,4 +37,14 @@ Route::get('/sell',function (){
 Route::get('/scanner',function (){
     return view('customer.pages.scanner');
 })->name('scanner');
+
+
+Route::get('/search', [\App\Http\Controllers\DashboardController::class, 'searchVehicles'])->name('search.vehicles');
+Route::get('/vehicles', [VehicleController::class, 'index'])->name('customer.vehicles.index');
+Route::get('/vehicle/search', [VehicleController::class, 'search'])->name('customer.vehicles.search');
+Route::get('/new', [VehicleController::class, 'filterByCondition'])->name('customer.vehicles.new')->defaults('condition', 'new');
+Route::get('/used', [VehicleController::class, 'filterByCondition'])->name('customer.vehicles.used')->defaults('condition', 'used');
+Route::get('/compare', [VehicleController::class, 'compare'])->name('customer.vehicles.compare');
+Route::get('/{slug}', [VehicleController::class, 'show'])->name('customer.vehicles.show');
+
 
