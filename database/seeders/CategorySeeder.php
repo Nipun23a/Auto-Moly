@@ -13,6 +13,7 @@ class CategorySeeder extends Seeder
             [
                 'name' => 'Sedan',
                 'description' => 'Compact and comfortable vehicles suitable for city and highway driving.'
+                'file_link' =>
             ],
             [
                 'name' => 'SUV',
