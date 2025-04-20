@@ -41,10 +41,11 @@ Route::get('/scanner',function (){
 
 Route::get('/search', [\App\Http\Controllers\DashboardController::class, 'searchVehicles'])->name('search.vehicles');
 Route::get('/vehicles', [VehicleController::class, 'index'])->name('customer.vehicles.index');
+Route::get('/vehicles/{slug}',[VehicleController::class,'show'])->name('customer.vehicles.show');
 Route::get('/vehicle/search', [VehicleController::class, 'search'])->name('customer.vehicles.search');
 Route::get('/new', [VehicleController::class, 'filterByCondition'])->name('customer.vehicles.new')->defaults('condition', 'new');
 Route::get('/used', [VehicleController::class, 'filterByCondition'])->name('customer.vehicles.used')->defaults('condition', 'used');
 Route::get('/compare', [VehicleController::class, 'compare'])->name('customer.vehicles.compare');
-Route::get('/{slug}', [VehicleController::class, 'show'])->name('customer.vehicles.show');
+
 
 

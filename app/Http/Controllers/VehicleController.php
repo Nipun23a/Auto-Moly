@@ -77,19 +77,32 @@ class VehicleController extends Controller
 
     public function show($slug)
     {
-        $vehicle = Vehicle::with(['model.brand', 'model.category', 'images', 'user'])
-            ->where('slug', $slug)
-            ->firstOrFail();
+        // Find the vehicle by slug with all necessary relationships
+        $vehicle = Vehicle::with([
+            'model.brand',
+            'model.category',
+            'images',
+            'history',
+            'service.service'
+        ])->where('slug', $slug)->firstOrFail();
 
-        // Get similar vehicles
-        $similarVehicles = Vehicle::with(['model.brand', 'images'])
-            ->where('model_id', $vehicle->model_id)
+        // Get related vehicles (same brand or category)
+        $relatedVehicles = Vehicle::with(['model.brand', 'images'])
             ->where('id', '!=', $vehicle->id)
-            ->where('status', 'active')
+            ->where('status', 'available')
+            ->where(function($query) use ($vehicle) {
+                $query->whereHas('model', function($q) use ($vehicle) {
+                    $q->where('brand_id', $vehicle->model->brand_id)
+                        ->orWhere('category_id', $vehicle->model->category_id);
+                });
+            })
             ->limit(3)
             ->get();
 
-        return view('customer.pages.vehicle.show', compact('vehicle', 'similarVehicles'));
+        // Get vehicle colors if applicable
+        $colors = $vehicle->images->pluck('image_path')->unique()->values()->all();
+
+        return view('customer.pages.vehicles.show', compact('vehicle', 'relatedVehicles', 'colors',));
     }
 
     public function search(Request $request)

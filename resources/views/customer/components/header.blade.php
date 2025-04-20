@@ -226,7 +226,9 @@
                         <div class="impl_logo_responsive">
                             <a href="index.html"><img src="images/logo1.png" alt="Logo" class="img-fluid"></a>
                         </div>
-                        <a href="{{route('vehicle.sell')}}" class="impl_btn">Sell your car</a>
+                        @if(auth()->check())
+                            <a href="{{route('vehicle.sell')}}" class="impl_btn">Sell your car</a>
+                        @endif
                         <div class="impl_menu">
                             <nav>
                                 <div class="menu_cross">

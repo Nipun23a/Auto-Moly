@@ -76,21 +76,6 @@
                                                    data-to="{{ request('price_max') ?? $maxPrice }}" />
                                         </div>
                                     </div>
-                                    <!--Car Type-->
-                                    <div class="impl_product_type widget woocommerce">
-                                        <h2 class="widget-title">car type</h2>
-                                        <form id="category-filter-form" action="{{ route('customer.vehicles.index') }}" method="GET">
-                                            <input type="hidden" name="sort" value="{{ request('sort') }}">
-                                            <ul>
-                                                @foreach($categories as $category)
-                                                    <li>
-                                                        <a href="#" onclick="addCategoryFilter({{ $category->id }}); return false;">{{ $category->name }}</a>
-                                                    </li>
-                                                @endforeach
-                                            </ul>
-                                            <input type="hidden" name="category" id="category-filter" value="{{ request('category') }}">
-                                        </form>
-                                    </div>
                                 </div>
                             </div>
                             <div class="col-lg-9 col-md-8">
