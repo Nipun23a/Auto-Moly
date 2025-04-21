@@ -246,10 +246,10 @@ class VehicleController extends Controller
 
                 foreach ($files as $index => $file) {
                     $filename = $vehicle->id . '_' . time() . '_' . $index . '.' . $file->getClientOriginalExtension();
-                    $filePath = $file->storeAs('public/vehicle_images', $filename);
+                    $filePath = $file->storeAs('images/vehicles', $filename, 'public');
 
                     $image = new VehicleImage();
-                    $image->image_path = 'storage/vehicle_images/' . $filename;
+                    $image->image_path = 'images/vehicles/' . $filename; // This is the relative path from storage/app/public
                     $image->is_primary = ($primaryImageIndex !== null && (int)$primaryImageIndex === $index);
                     $image->vehicle_id = $vehicle->id;
                     $image->save();

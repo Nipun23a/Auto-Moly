@@ -109,10 +109,19 @@ class UserController extends Controller
 
         // Attempt login
         if (Auth::attempt($credentials)) {
-            // Regenerate session to prevent fixation
             $request->session()->regenerate();
 
-            // Redirect to intended page or dashboard
+            // Get authenticated user
+            $user = Auth::user();
+
+            // Redirect based on role
+            if ($user->role && $user->role->name === 'admin') {
+                return redirect()->route('admin.dashboard')->with('success', 'Welcome, Admin!');
+            } elseif ($user->role && $user->role->name === 'user') {
+                return redirect()->route('home')->with('success', 'Login successful');
+            }
+
+            // Default redirect
             return redirect()->route('home')->with('success', 'Login successful');
         }
 
@@ -121,6 +130,7 @@ class UserController extends Controller
             'email' => 'The provided credentials do not match our records.',
         ])->onlyInput('email');
     }
+
 
     public function logout(Request $request){
         Auth::logout();
