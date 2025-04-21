@@ -1,5 +1,6 @@
 @extends('customer.layouts.app')
 @section('content')
+    <!------ Breadcrumbs Start ------>
     <div class="impl_bread_wrapper">
         <div class="container">
             <div class="row">
@@ -19,150 +20,182 @@
             <div class="row">
                 <div class="col-lg-12 col-md-12">
                     <div class="impl_heading">
-                        <h1>Sell your car in just 4 easy steps</h1>
+                        <h1>Sell your car in just 5 easy steps</h1>
                     </div>
                 </div>
                 <div class="col-lg-12 col-md-12">
-                    <form id="impl_sform" action="#">
+                    <form id="impl_sform" action="{{route('vehicle.sell')}}" method="POST" enctype="multipart/form-data">
+                        <!-- CSRF Token for Laravel -->
+                        @method('POST')
+                        @csrf
                         <div class="impl_steps_wrapper">
                             <h3><span class="step_number">1</span></h3>
                             <section>
-                                <div class="impl_step">
-                                    <h2 class="step-title">Contact Details</h2>
-                                    <div class="row">
-                                        <div class="col-lg-6 col-md-6">
-                                            <div class="form-group">
-                                                <input id="userName" name="userName" type="text" class="form-control required" placeholder="YOUR NAME*">
-                                            </div>
-                                        </div>
-                                        <div class="col-lg-6 col-md-6">
-                                            <div class="form-group">
-                                                <input id="step_mobile" type="text" name="mobile" class="form-control required number" placeholder="YOUR MOBILE*">
-                                            </div>
-                                        </div>
-                                        <div class="col-lg-6 col-md-6">
-                                            <div class="form-group">
-                                                <input id="step_mail" type="text" name="email" class="form-control required email" placeholder="YOUR EMAIL*" data-valid="email" data-error="Email should be valid.">
-                                            </div>
-                                        </div>
-                                        <div class="col-lg-6 col-md-6">
-                                            <div class="form-group">
-                                                <input id="step_city" type="text" name="city" class="form-control required" placeholder="CITY">
-                                            </div>
-                                        </div>
-                                        <div class="col-lg-6 col-md-6">
-                                            <div class="form-group">
-                                                <input id="step_state" type="text" name="state" class="form-control required" placeholder="STATE">
-                                            </div>
-                                        </div>
-                                        <div class="col-lg-6 col-md-6">
-                                            <div class="form-group">
-                                                <input id="step_pin" type="text" name="pincode" class="form-control required number" placeholder="PINCODE">
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </section>
-                            <h3><span class="step_number">2</span></h3>
-                            <section>
-                                <!--second step-->
                                 <div class="impl_step">
                                     <h2 class="step-title">Car Details</h2>
                                     <div class="row">
                                         <div class="col-lg-6 col-md-6">
                                             <div class="form-group">
-                                                <input id="step_brand" type="text" name="BRND" class="form-control required" placeholder="CAR BRAND">
+                                                <input id="step_year" type="text" name="name" class="form-control required number" placeholder="TITLE*">
                                             </div>
                                         </div>
                                         <div class="col-lg-6 col-md-6">
                                             <div class="form-group">
-                                                <input id="step_modal" type="text" name="model" class="form-control required" placeholder="MODEL">
+                                                <select id="model_id" name="model_id" class="form-control required">
+                                                    <option value="">SELECT MODEL*</option>
+                                                    @foreach ($carModels as $carModel)
+                                                        <option value="{{ $carModel->id }}">{{ $carModel->name }}</option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+
+                                        </div>
+                                        <div class="col-lg-6 col-md-6">
+                                            <div class="form-group">
+                                                <input id="step_year" type="text" name="year" class="form-control required number" placeholder="YEAR*">
                                             </div>
                                         </div>
                                         <div class="col-lg-6 col-md-6">
                                             <div class="form-group">
-                                                <input id="step_year" type="text" name="year" class="form-control required number" placeholder="YEAR">
+                                                <input id="step_meter" type="text" name="mileage" class="form-control required number" placeholder="KILOMETERS DRIVEN*">
                                             </div>
                                         </div>
+                                        <!-- Replace color with condition -->
                                         <div class="col-lg-6 col-md-6">
                                             <div class="form-group">
-                                                <input id="step_meter" type="text" name="meter" class="form-control required" placeholder="KILOMETERS DRIVEN">
+                                                <select id="condition" name="condition" class="form-control required">
+                                                    <option value="">CONDITION*</option>
+                                                    <option value="new">New</option>
+                                                    <option value="used">Used</option>
+                                                    <option value="pre-owned">Pre-Owned</option>
+                                                </select>
                                             </div>
                                         </div>
+                                        <!-- Transmission -->
                                         <div class="col-lg-6 col-md-6">
                                             <div class="form-group">
-                                                <input id="step_color" type="text" name="color" class="form-control required" placeholder="COLOR">
+                                                <select id="transmission" name="transmission" class="form-control required">
+                                                    <option value="">TRANSMISSION*</option>
+                                                    <option value="auto">Automatic</option>
+                                                    <option value="manual">Manual</option>
+                                                </select>
                                             </div>
                                         </div>
+                                        <!-- Fuel Type -->
                                         <div class="col-lg-6 col-md-6">
                                             <div class="form-group">
-                                                <input id="step_price" type="text" name="price" class="form-control required" placeholder="PRICE">
+                                                <select id="fuel_type" name="fuel_type" class="form-control required">
+                                                    <option value="">FUEL TYPE*</option>
+                                                    <option value="diesel">Diesel</option>
+                                                    <option value="petrol">Petrol</option>
+                                                    <option value="electric">Electric</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <!-- Price -->
+                                        <div class="col-lg-6 col-md-6">
+                                            <div class="form-group">
+                                                <input id="step_price" type="text" name="price" class="form-control required number" placeholder="PRICE*">
+                                            </div>
+                                        </div>
+                                        <!-- Description & Location -->
+                                        <div class="col-lg-12 col-md-12">
+                                            <div class="form-group">
+                                                <textarea id="description" name="description" class="form-control" placeholder="VEHICLE DESCRIPTION" rows="4"></textarea>
+                                            </div>
+                                            <div class="form-group">
+                                                <textarea id="location" name="location" class="form-control required" placeholder="LOCATION*" rows="2"></textarea>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </section>
-                            <h3><span class="step_number">3</span></h3>
+                            <!-- Step 4: Vehicle History -->
+                            <h3><span class="step_number">2</span></h3>
                             <section>
-                                <!--third step-->
                                 <div class="impl_step">
-                                    <h2 class="step-title">Car images</h2>
-                                    <ul class="step_car_img">
-                                        <li class="step_imgs"><img src="http://via.placeholder.com/170x170" alt="" class="img-fluid" />
-                                            <div class="step_car_select">
-                                                <i class="fa fa-times" aria-hidden="true"></i>
+                                    <h2 class="step-title">Vehicle History</h2>
+                                    <div class="row">
+                                        <div class="col-lg-6 col-md-6">
+                                            <div class="form-group">
+                                                <input id="accidents" type="number" name="accidents" class="form-control" placeholder="NUMBER OF ACCIDENTS" min="0">
                                             </div>
-                                        </li>
-                                        <li class="step_imgs"><img src="http://via.placeholder.com/170x170" alt="" class="img-fluid" />
-                                            <div class="step_car_select">
-                                                <i class="fa fa-times" aria-hidden="true"></i>
+                                        </div>
+                                        <div class="col-lg-6 col-md-6">
+                                            <div class="form-group">
+                                                <input id="ownership_count" type="number" name="ownership_count" class="form-control" placeholder="NUMBER OF PREVIOUS OWNERS" min="0">
                                             </div>
-                                        </li>
-                                        <li><img src="http://via.placeholder.com/170x170" alt="" class="img-fluid" />
-                                            <input type="file" />
-                                        </li>
-                                        <li><img src="http://via.placeholder.com/170x170" alt="" class="img-fluid" />
-                                            <input type="file" />
-                                        </li>
-                                        <li><img src="http://via.placeholder.com/170x170" alt="" class="img-fluid" />
-                                            <input type="file" />
-                                        </li>
-                                    </ul>
+                                        </div>
+                                        <div class="col-lg-6 col-md-6">
+                                            <div class="form-group">
+                                                <select id="has_flood_damage" name="has_flood_damage" class="form-control">
+                                                    <option value="">FLOOD DAMAGE?</option>
+                                                    <option value="0">No</option>
+                                                    <option value="1">Yes</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-6 col-md-6">
+                                            <div class="form-group">
+                                                <select id="has_salvage_title" name="has_salvage_title" class="form-control">
+                                                    <option value="">SALVAGE TITLE?</option>
+                                                    <option value="0">No</option>
+                                                    <option value="1">Yes</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-12 col-md-12">
+                                            <div class="form-group">
+                                                <textarea id="service_records" name="service_records" class="form-control" placeholder="SERVICE RECORDS (Comma-separated list of service dates and descriptions)" rows="3"></textarea>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-12 col-md-12">
+                                            <div class="form-group">
+                                                <textarea id="history_notes" name="history_notes" class="form-control" placeholder="ADDITIONAL HISTORY NOTES" rows="3"></textarea>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </section>
-                            <h3><span class="step_number">4</span></h3>
-                            <section>
-                                <!--fourth step-->
-                                <div class="impl_step">
-                                    <h2 class="step-title">overview</h2>
-                                    <ul class="step_car_img">
-                                        <li class="">
-                                            <img src="http://via.placeholder.com/170x170" alt="" class="img-fluid step_view_img" />
-                                            <img src="http://via.placeholder.com/170x170/fff" alt="" class="img-fluid step_view_img_over" />
 
-                                        </li>
-                                        <li class="step_imgs"><img src="http://via.placeholder.com/170x170" alt="" class="img-fluid step_view_img" />
-                                            <img src="http://via.placeholder.com/170x170/fff" alt="" class="img-fluid step_view_img_over" />
-                                        </li>
-                                        <li class="step_imgs"><img src="http://via.placeholder.com/170x170" alt="" class="img-fluid step_view_img" />
-                                            <img src="http://via.placeholder.com/170x170/fff" alt="" class="img-fluid step_view_img_over" />
-                                        </li>
-                                        <li class="step_imgs"><img src="http://via.placeholder.com/170x170" alt="" class="img-fluid step_view_img" />
-                                            <img src="http://via.placeholder.com/170x170/fff" alt="" class="img-fluid step_view_img_over" />
-                                        </li>
-                                        <li class="step_imgs"><img src="http://via.placeholder.com/170x170" alt="" class="img-fluid step_view_img" />
-                                            <img src="http://via.placeholder.com/170x170/fff" alt="" class="img-fluid step_view_img_over" />
-                                        </li>
-                                    </ul>
-                                    <div class="step_car_features">
-                                        <ul>
-                                            <li><span class="fea_name">car brand</span> <span class="fea_colon">: </span><span class="fea_value">Serpent</span> </li>
-                                            <li><span class="fea_name">color</span> <span class="fea_colon">: </span><span class="fea_value">white</span> </li>
-                                            <li><span class="fea_name">model</span> <span class="fea_colon">: </span><span class="fea_value">Serpentz8 </span> </li>
-                                            <li><span class="fea_name">driven</span> <span class="fea_colon">: </span> <span class="fea_value">12000 kms </span> </li>
-                                            <li><span class="fea_name">year</span> <span class="fea_colon">: </span><span class="fea_value">2015 </span> </li>
-                                            <li><span class="fea_name">price</span> <span class="fea_colon">: </span><span class="fea_value">$81000</span> </li>
-                                        </ul>
+                            <!-- Step 5: Car Images -->
+                            <h3><span class="step_number">3</span></h3>
+                            <section>
+                                <div class="impl_step">
+                                    <h2 class="step-title">VEHICLE Images</h2>
+                                    <div class="row">
+                                        <div class="col-lg-12 col-md-12">
+                                            <div class="form-group">
+                                                <label for="carImages" class="btn btn-primary btn-lg btn-block">
+                                                    <i class="fa fa-upload"></i> Upload Car Images
+                                                </label>
+                                                <input type="file" id="carImages" name="car_images[]" accept="image/*" multiple style="display: none;">
+                                                <small class="form-text text-muted">Upload multiple images of your vehicle (max 10 images)</small>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-lg-12 col-md-12">
+                                            <div class="form-group">
+                                                <div id="preview" class="image-preview-container" style="margin-top: 20px; display: flex; flex-wrap: wrap; gap: 10px;"></div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-lg-12 col-md-12">
+                                            <div class="form-group">
+                                                <label>Select Primary Image:</label>
+                                                <select id="primary_image" name="primary_image" class="form-control">
+                                                    <option value="">Select primary image after uploading</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-lg-12 col-md-12">
+                                            <div class="form-group text-center">
+                                                <button type="submit" class="btn btn-success btn-lg">Submit Listing</button>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </section>
@@ -172,5 +205,65 @@
             </div>
         </div>
     </div>
-    <!------ Footer Section Start ------>
+
+    <script>
+        // JavaScript to handle dynamic interactions
+        document.addEventListener('DOMContentLoaded', function() {
+            const imageInput = document.getElementById('carImages');
+            const previewContainer = document.getElementById('preview');
+            const primaryImageSelect = document.getElementById('primary_image');
+
+            imageInput.addEventListener('change', function() {
+                // Clear previous previews
+                previewContainer.innerHTML = '';
+                primaryImageSelect.innerHTML = '<option value="">Select primary image</option>';
+
+                if (this.files) {
+                    // Limit to 10 images
+                    const maxFiles = 10;
+                    const filesToProcess = this.files.length > maxFiles ? maxFiles : this.files.length;
+
+                    for (let i = 0; i < filesToProcess; i++) {
+                        const file = this.files[i];
+
+                        // Create image preview
+                        const imageContainer = document.createElement('div');
+                        imageContainer.className = 'image-preview';
+                        imageContainer.style.width = '150px';
+                        imageContainer.style.position = 'relative';
+
+                        const img = document.createElement('img');
+                        img.src = URL.createObjectURL(file);
+                        img.style.width = '100%';
+                        img.style.height = 'auto';
+                        img.style.borderRadius = '4px';
+                        imageContainer.appendChild(img);
+
+                        // Remove button
+                        const removeBtn = document.createElement('button');
+                        removeBtn.type = 'button';
+                        removeBtn.className = 'btn btn-danger btn-sm';
+                        removeBtn.style.position = 'absolute';
+                        removeBtn.style.top = '5px';
+                        removeBtn.style.right = '5px';
+                        removeBtn.innerHTML = '&times;';
+                        removeBtn.dataset.index = i;
+                        removeBtn.addEventListener('click', function() {
+                            imageContainer.remove();
+                            // Would need to update the file input here
+                        });
+                        imageContainer.appendChild(removeBtn);
+
+                        previewContainer.appendChild(imageContainer);
+
+                        // Add to primary image dropdown
+                        const option = document.createElement('option');
+                        option.value = i;
+                        option.textContent = `Image ${i+1}`;
+                        primaryImageSelect.appendChild(option);
+                    }
+                }
+            });
+        });
+    </script>
 @endsection

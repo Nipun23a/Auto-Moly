@@ -6,7 +6,13 @@ use App\Models\Brand;
 use App\Models\CarModel;
 use App\Models\Category;
 use App\Models\Vehicle;
+use App\Models\VehicleHistory;
+use App\Models\VehicleImage;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Str;
 
 class VehicleController extends Controller
 {
@@ -123,7 +129,7 @@ class VehicleController extends Controller
             })
             ->paginate(9);
 
-        return view('customer.pages.vehicle.index', compact('vehicles', 'query'));
+        return view('customer.pages.vehicles.index', compact('vehicles', 'query'));
     }
 
     public function filterByCondition($condition)
@@ -140,7 +146,7 @@ class VehicleController extends Controller
             ->where('condition', $condition)
             ->count();
 
-        return view('customer.pages.vehicle.index', compact('vehicles', 'brands', 'categories', 'totalVehicles', 'condition'));
+        return view('customer.pages.vehicles.index', compact('vehicles', 'brands', 'categories', 'totalVehicles', 'condition'));
     }
 
     public function compare(Request $request)
@@ -151,6 +157,128 @@ class VehicleController extends Controller
             ->whereIn('id', $vehicleIds)
             ->get();
 
-        return view('customer.pages.vehicle.compare', compact('vehicles'));
+        return view('customer.pages.vehicles.compare', compact('vehicles'));
     }
+
+    public function create(){
+        $carModels = CarModel::all();
+        return view('customer.pages.vehicles.create', compact('carModels'));
+    }
+
+    public function store(Request $request)
+    {
+        // Validate the request data
+        $validatedData = $request->validate([
+            'name' => 'required|string|max:255',
+            'model_id' => 'required|exists:models,id',
+            'year' => 'required|integer|min:1900|max:' . (date('Y') + 1),
+            'mileage' => 'required|numeric|min:0',
+            'condition' => 'required|in:new,used,pre-owned',
+            'transmission' => 'required|in:auto,manual',
+            'fuel_type' => 'required|in:diesel,petrol,electric',
+            'price' => 'required|numeric|min:0',
+            'description' => 'nullable|string',
+            'location' => 'required|string',
+            'accidents' => 'nullable|integer|min:0',
+            'ownership_count' => 'nullable|integer|min:0',
+            'has_flood_damage' => 'nullable|boolean',
+            'has_salvage_title' => 'nullable|boolean',
+            'service_records' => 'nullable|string',
+            'history_notes' => 'nullable|string',
+            'car_images.*' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
+            'primary_image' => 'nullable|integer|min:0',
+        ]);
+
+        try {
+            DB::beginTransaction();
+
+            Log::info('Starting vehicle creation process', ['user_id' => auth()->id(), 'data' => $validatedData]);
+
+            // Create slug
+            $slug = Str::slug($validatedData['name']);
+            $baseSlug = $slug;
+            $counter = 1;
+            while (Vehicle::where('slug', $slug)->exists()) {
+                $slug = $baseSlug . '-' . $counter;
+                $counter++;
+            }
+
+            // Save vehicle
+            $vehicle = new Vehicle();
+            $vehicle->title = $validatedData['name'];
+            $vehicle->slug = $slug;
+            $vehicle->year = $validatedData['year'];
+            $vehicle->price = $validatedData['price'];
+            $vehicle->mileage = $validatedData['mileage'];
+            $vehicle->fuel_type = $validatedData['fuel_type'];
+            $vehicle->transmission = $validatedData['transmission'];
+            $vehicle->condition = $validatedData['condition'];
+            $vehicle->location = $validatedData['location'];
+            $vehicle->description = $validatedData['description'] ?? null;
+            $vehicle->status = 'pending';
+            $vehicle->model_id = $validatedData['model_id'];
+            $vehicle->user_id = auth()->id();
+            $vehicle->save();
+
+            Log::info('Vehicle created successfully', ['vehicle_id' => $vehicle->id]);
+
+            // Save vehicle history
+            $vehicleHistory = new VehicleHistory();
+            $vehicleHistory->vehicle_id = $vehicle->id;
+            $vehicleHistory->accidents = $validatedData['accidents'] ?? 0;
+            $vehicleHistory->ownership_count = $validatedData['ownership_count'] ?? 1;
+            $vehicleHistory->has_flood_damage = $validatedData['has_flood_damage'] ?? false;
+            $vehicleHistory->has_salvage_title = $validatedData['has_salvage_title'] ?? false;
+
+            if (!empty($validatedData['service_records'])) {
+                $serviceRecords = array_map('trim', explode(',', $validatedData['service_records']));
+                $vehicleHistory->service_records = json_encode($serviceRecords);
+                Log::info('Service records saved', ['records' => $serviceRecords]);
+            }
+
+            $vehicleHistory->notes = $validatedData['history_notes'] ?? null;
+            $vehicleHistory->save();
+
+            // Upload images
+            if ($request->hasFile('car_images')) {
+                $primaryImageIndex = $request->input('primary_image');
+                $files = $request->file('car_images');
+
+                foreach ($files as $index => $file) {
+                    $filename = $vehicle->id . '_' . time() . '_' . $index . '.' . $file->getClientOriginalExtension();
+                    $filePath = $file->storeAs('public/vehicle_images', $filename);
+
+                    $image = new VehicleImage();
+                    $image->image_path = 'storage/vehicle_images/' . $filename;
+                    $image->is_primary = ($primaryImageIndex !== null && (int)$primaryImageIndex === $index);
+                    $image->vehicle_id = $vehicle->id;
+                    $image->save();
+
+                    Log::info('Image uploaded', ['image' => $image->image_path, 'is_primary' => $image->is_primary]);
+                }
+
+                // Fallback to first image as primary if none was selected
+                if ($primaryImageIndex === null && count($files) > 0) {
+                    $firstImage = VehicleImage::where('vehicle_id', $vehicle->id)->first();
+                    if ($firstImage) {
+                        $firstImage->is_primary = true;
+                        $firstImage->save();
+                        Log::info('Default primary image set', ['image_id' => $firstImage->id]);
+                    }
+                }
+            }
+
+            DB::commit();
+
+            Log::info('Vehicle listing completed successfully', ['vehicle_id' => $vehicle->id]);
+            return redirect()->route('home')->with('success', 'Your vehicle has been listed successfully and is pending approval.');
+
+        } catch (\Exception $e) {
+            DB::rollBack();
+            Log::error('Vehicle listing failed', ['error' => $e->getMessage(), 'trace' => $e->getTraceAsString()]);
+            return redirect()->back()->with('error', 'Failed to list your vehicle. ' . $e->getMessage())->withInput();
+        }
+    }
+
+
 }

@@ -59,17 +59,18 @@
 <script type="text/javascript" src="{{ asset('assets/js/plugin/nice_select/jquery.nice-select.min.js') }}"></script>
 
 <!-- Revolution Slider Scripts -->
-<script type="text/javascript" src="{{ asset('assets/js/plugin/revolution/js/jquery.themepunch.revolution.min.js') }}"></script>
-<script type="text/javascript" src="{{ asset('assets/js/plugin/revolution/js/jquery.themepunch.tools.min.js') }}"></script>
-<script type="text/javascript" src="{{ asset('assets/js/plugin/revolution/js/revolution.extension.kenburn.min.js') }}"></script>
-<script type="text/javascript" src="{{ asset('assets/js/plugin/revolution/js/revolution.extension.layeranimation.min.js') }}"></script>
-<script type="text/javascript" src="{{ asset('assets/js/plugin/revolution/js/revolution.extension.navigation.min.js') }}"></script>
-<script type="text/javascript" src="{{ asset('assets/js/plugin/revolution/js/revolution.extension.parallax.min.js') }}"></script>
-<script type="text/javascript" src="{{ asset('assets/js/plugin/revolution/js/revolution.extension.slideanims.min.js') }}"></script>
-<script type="text/javascript" src="{{ asset('assets/js/plugin/revolution/js/revolution.extension.actions.min.js') }}"></script>
-<script type="text/javascript" src="{{ asset('assets/js/plugin/revolution/js/revolution.extension.addon.slicey.min.js') }}"></script>
-
-<!-- Custom JS -->
-<script type="text/javascript" src="{{ asset('assets/js/custom.js') }}"></script>
+<!----------Revolution slider start---------->
+<script type="text/javascript" src="{{asset('assets/js/plugin/revolution/js/jquery.themepunch.revolution.min.js')}}"></script>
+<script type="text/javascript" src="{{asset('assets/js/plugin/revolution/js/jquery.themepunch.tools.min.js')}}"></script>
+<script type="text/javascript" src="{{asset('assets/js/plugin/revolution/js/revolution.extension.kenburn.min.js')}}"></script>
+<script type="text/javascript" src="{{asset('assets/js/plugin/revolution/js/revolution.extension.layeranimation.min.js')}}"></script>
+<script type="text/javascript" src="{{asset('assets/js/plugin/revolution/js/revolution.extension.navigation.min.js')}}"></script>
+<script type="text/javascript" src="{{asset('assets/js/plugin/revolution/js/revolution.extension.parallax.min.js')}}"></script>
+<script type="text/javascript" src="{{asset('assets/js/plugin/revolution/js/revolution.extension.slideanims.min.js')}}"></script>
+<script type="text/javascript" src="{{asset('assets/js/plugin/revolution/js/revolution.extension.actions.min.js')}}"></script>
+<script type="text/javascript" src="{{asset('assets/js/plugin/revolution/js/revolution.addon.slicey.min.js')}}"></script>
+<!----------Revolution slider start---------->
+<script type="text/javascript" src="{{asset('assets/js/custom.js')}}"></script>
+<!--Main js file End-->
 </body>
 </html>
