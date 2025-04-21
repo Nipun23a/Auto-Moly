@@ -1,0 +1,162 @@
+from flask import Flask, request, jsonify
+import pandas as pd
+import numpy as np
+import joblib
+import os
+from werkzeug.exceptions import BadRequest
+from flask_cors import CORS
+
+app = Flask(__name__)
+CORS(app)
+
+
+# Function to check if models exist
+def check_models():
+    required_files = [
+        'models/problem_model.pkl',
+        'models/solution_model.pkl',
+        'models/problem_encoder.pkl',
+        'models/solution_encoder.pkl'
+    ]
+
+    missing_files = [f for f in required_files if not os.path.exists(f)]
+
+    if missing_files:
+        return False, f"Missing model files: {', '.join(missing_files)}"
+    return True, "All models loaded successfully"
+
+
+# Function to make predictions
+def predict_issues_and_solutions(car_model, manufacture_year):
+    try:
+        # Load the trained models and encoders
+        problem_model = joblib.load('models/problem_model.pkl')
+        solution_model = joblib.load('models/solution_model.pkl')
+        problem_encoder = joblib.load('models/problem_encoder.pkl')
+        solution_encoder = joblib.load('models/solution_encoder.pkl')
+
+        # Calculate vehicle age
+        current_year = 2025  # Update as needed
+        vehicle_age = current_year - manufacture_year
+
+        # Create a dataframe for prediction
+        prediction_df = pd.DataFrame({
+            'VEHICAL COMPANY': [car_model],
+            'MANUFACTURE_YEAR': [manufacture_year],
+            'VEHICLE_AGE': [vehicle_age]
+        })
+
+        # Make predictions
+        problem_prediction = problem_model.predict(prediction_df)[0]
+        solution_prediction = solution_model.predict(prediction_df)[0]
+
+        # Get the probabilities to find potential future issues
+        problem_probs = problem_model.predict_proba(prediction_df)[0]
+        solution_probs = solution_model.predict_proba(prediction_df)[0]
+
+        # Get the top 3 most likely problems and solutions
+        top_problem_indices = np.argsort(problem_probs)[::-1][:3]
+        top_solution_indices = np.argsort(solution_probs)[::-1][:3]
+
+        top_problems = [
+            {
+                "problem": problem_encoder.inverse_transform([idx])[0],
+                "probability": float(problem_probs[idx] * 100)
+            }
+            for idx in top_problem_indices
+        ]
+
+        top_solutions = [
+            {
+                "solution": solution_encoder.inverse_transform([idx])[0],
+                "probability": float(solution_probs[idx] * 100)
+            }
+            for idx in top_solution_indices
+        ]
+
+        # Return most likely problem and solution along with top potential issues
+        return {
+            'most_likely_problem': problem_encoder.inverse_transform([problem_prediction])[0],
+            'most_likely_solution': solution_encoder.inverse_transform([solution_prediction])[0],
+            'potential_problems': top_problems,
+            'potential_solutions': top_solutions
+        }
+    except Exception as e:
+        raise Exception(f"Error making prediction: {str(e)}")
+
+
+@app.route('/')
+def home():
+    return """
+    <h1>Car Problem Prediction API</h1>
+    <p>Send POST requests to /predict with JSON data containing car_model and manufacture_year.</p>
+    <p>Example: {"car_model": "Maruti Suzuki", "manufacture_year": 2018}</p>
+    """
+
+
+@app.route('/health', methods=['GET'])
+def health_check():
+    models_ok, message = check_models()
+    if models_ok:
+        return jsonify({
+            'status': 'healthy',
+            'message': message
+        }), 200
+    else:
+        return jsonify({
+            'status': 'unhealthy',
+            'message': message
+        }), 500
+
+
+@app.route('/predict', methods=['POST'])
+def predict():
+    try:
+        # Check if models are available
+        models_ok, message = check_models()
+        if not models_ok:
+            return jsonify({
+                'error': 'Model files not found',
+                'details': message
+            }), 500
+
+        # Get JSON data from request
+        data = request.get_json()
+
+        # Validate input data
+        if not data or 'car_model' not in data or 'manufacture_year' not in data:
+            return jsonify({
+                'error': 'Missing required fields',
+                'required': ['car_model', 'manufacture_year']
+            }), 400
+
+        car_model = data['car_model']
+
+        try:
+            manufacture_year = int(data['manufacture_year'])
+        except (ValueError, TypeError):
+            return jsonify({
+                'error': 'Invalid manufacture_year',
+                'message': 'manufacture_year must be a valid integer'
+            }), 400
+
+        # Make prediction
+        prediction_result = predict_issues_and_solutions(car_model, manufacture_year)
+
+        # Add vehicle info to response
+        prediction_result['vehicle_info'] = {
+            'car_model': car_model,
+            'manufacture_year': manufacture_year,
+            'vehicle_age': 2025 - manufacture_year  # Update current year as needed
+        }
+
+        return jsonify(prediction_result), 200
+
+    except BadRequest as e:
+        return jsonify({'error': 'Invalid request', 'message': str(e)}), 400
+    except Exception as e:
+        return jsonify({'error': 'Prediction failed', 'message': str(e)}), 500
+
+
+if __name__ == '__main__':
+    app.run(debug=True, host='0.0.0.0', port=5000)
