@@ -13,55 +13,10 @@
 
                             @auth
                                 <!-- Show when user is logged in -->
-                                <li><a href="{{ route('customer.vehicles.compare') }}"><i class="fa fa-exchange" aria-hidden="true"></i></a></li>
-
-                                <li class="cart-popup">
-                                    <a href="#"><i class="fa fa-shopping-cart" aria-hidden="true"></i></a>
-                                    <!--shopping cart box-->
-                                    <div class="cart-box">
-                                        <div class="popup-container">
-                                            <div class="cart-entry">
-                                                <a href="#" class="image">
-                                                    <img src="http://via.placeholder.com/70x60" alt="">
-                                                </a>
-                                                <div class="content">
-                                                    <a href="#" class="title">Serpent</a>
-                                                    <p class="quantity">Quantity: 1</p>
-                                                    <span class="price">$4500.00</span>
-                                                </div>
-                                                <div class="button-x">
-                                                    <i class="fa fa-times-circle" aria-hidden="true"></i>
-                                                </div>
-                                            </div>
-                                            <div class="cart-entry">
-                                                <a href="#" class="image">
-                                                    <img src="http://via.placeholder.com/70x60" alt="">
-                                                </a>
-                                                <div class="content">
-                                                    <a href="#" class="title">Empire</a>
-                                                    <p class="quantity">Quantity: 1</p>
-                                                    <span class="price">$900.00</span>
-                                                </div>
-                                                <div class="button-x">
-                                                    <i class="fa fa-times-circle" aria-hidden="true"></i>
-                                                </div>
-                                            </div>
-                                            <div class="summary">
-                                                <div class="subtotal">Sub Total</div>
-                                                <div class="price-s">$5100.0</div>
-                                            </div>
-                                            <div class="cart-buttons">
-                                                <a href="#" class="btn impl_btn">View Cart</a>
-                                                <a href="#" class="btn impl_btn">Checkout</a>
-                                                <div class="clear"></div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </li>
-
+                                <li><a href="{{ route('compare.index') }}"><i class="fa fa-exchange" aria-hidden="true"></i></a></li>
                                 <!-- Optionally, show username -->
                                 <li>
-                                    <a href="#">
+                                    <a href="{{route('profile.index')}}">
                                         <i class="fa fa-user" aria-hidden="true"></i> {{ Auth::user()->name }}
                                     </a>
                                 </li>
@@ -240,7 +195,6 @@
                                     <li><a href="{{route('customer.vehicles.index')}}">Vehicle</a></li>
                                     <li><a href="{{route('scanner')}}">Scanner</a></li>
                                     <li><a href="{{route('service')}}">Service</a></li>
-                                    <li><a href="{{route('contact')}}">Contact</a></li>
                                 </ul>
                             </nav>
                         </div>

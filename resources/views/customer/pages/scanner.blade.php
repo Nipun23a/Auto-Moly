@@ -57,7 +57,7 @@
                                     <div class="row">
                                         <div class="col-md-4">
                                             <div class="info_item">
-                                                <span class="info_label">Car Model:</span>
+                                                <span class="info_label" style="color: white">Car Model:</span>
                                                 <span id="result_car_model" class="info_value">Toyota Corolla</span>
                                             </div>
                                         </div>
@@ -150,12 +150,12 @@
 
         .info_label {
             font-weight: bold;
-            color: #666;
+            color: white;
         }
 
         .info_value {
             font-weight: 600;
-            color: #333;
+            color: white;
             margin-left: 10px;
         }
 

@@ -91,11 +91,6 @@
                                                         <img src="{{ asset('images/placeholder-car.jpg') }}" alt="{{ $vehicle->title }}" class="img-fluid impl_frst_car_img" />
                                                         <img src="{{ asset('images/placeholder-car.jpg') }}" alt="{{ $vehicle->title }}" class="img-fluid impl_hover_car_img" />
                                                     @endif
-                                                    <span class="impl_img_tag" title="compare">
-                                                        <a href="{{ route('customer.vehicles.compare', ['vehicles[]' => $vehicle->id]) }}">
-                                                            <i class="fa fa-exchange" aria-hidden="true"></i>
-                                                        </a>
-                                                    </span>
                                                 </div>
                                                 <div class="impl_fea_car_data">
                                                     <h2><a href="{{ route('customer.vehicles.show', $vehicle->slug) }}">{{ $vehicle->title }}</a></h2>

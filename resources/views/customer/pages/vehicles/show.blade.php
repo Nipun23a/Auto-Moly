@@ -49,8 +49,8 @@
                         </div>
                         <p>{{ Str::limit($vehicle->description, 250) }}</p>
                         <div class="impl_old_buy_btn">
-                            <a href="#" class="impl_btn">buy now</a>
-                            <a href="{{ route('customer.vehicles.compare', ['vehicles[]' => $vehicle->id]) }}" class="impl_btn">compare</a>
+                            <a href="{{ route('checkout', $vehicle->id) }}" class="impl_btn">Buy now</a>
+
                         </div>
                     </div>
                 </div>
@@ -148,6 +148,85 @@
                         </ul>
                     </div>
                 </div>
+
+                <!-- Add trusted score section to the right -->
+                <div class="col-lg-6 col-md-12">
+                    <div class="impl_trusted_score">
+                        <div class="impl_heading">
+                            <h1>Trusted Score</h1>
+                        </div>
+
+                        @php
+                            // Calculate overall trusted score based on car specifications
+                            $yearScore = min(($vehicle->year - 2000) * 0.5, 10) * 0.2;
+                            $mileageScore = (10 - min(($vehicle->mileage / 15000), 10)) * 0.2;
+
+                            $fuelTypeScore = match($vehicle->fuel_type) {
+                                'electric' => 9.0,
+                                'hybrid' => 7.5,
+                                'gas' => 6.0,
+                                'diesel' => 5.0,
+                                default => 6.0
+                            } * 0.15;
+
+                            $transmissionScore = match($vehicle->transmission) {
+                                'automatic' => 8.0,
+                                'manual' => 7.0,
+                                'semi-automatic' => 7.5,
+                                'cvt' => 8.5,
+                                default => 7.0
+                            } * 0.15;
+
+                            $conditionScore = match($vehicle->condition) {
+                                'new' => 10.0,
+                                'like new' => 9.0,
+                                'excellent' => 8.0,
+                                'good' => 7.0,
+                                'fair' => 5.0,
+                                default => 7.0
+                            } * 0.3;
+
+                            $ownershipScore = 0;
+                            if($vehicle->history) {
+                                $ownershipScore = match($vehicle->history->ownership_count) {
+                                    1 => 9.0,
+                                    2 => 7.0,
+                                    3 => 5.0,
+                                    default => 3.0
+                                } * 0.1;
+                            }
+
+                            // Calculate final score
+                            $trustedScore = $yearScore + $mileageScore + $fuelTypeScore + $transmissionScore + $conditionScore + $ownershipScore;
+                            $trustedScore = round($trustedScore, 1);
+
+                            // Determine rating text based on score
+                            $ratingText = match(true) {
+                                $trustedScore >= 9.0 => 'Exceptional',
+                                $trustedScore >= 8.0 => 'Excellent',
+                                $trustedScore >= 7.0 => 'Very Good',
+                                $trustedScore >= 6.0 => 'Good',
+                                $trustedScore >= 5.0 => 'Average',
+                                default => 'Fair'
+                            };
+
+                            // Calculate percentage for circular progress
+                            $scorePercentage = ($trustedScore / 10) * 100;
+                        @endphp
+
+                        <div class="trusted_score_container">
+                            <div class="score_circle_wrapper">
+                                <div class="score_circle">
+                                    <div class="score_circle_inner" style="--score-percentage: {{ $scorePercentage }}%">
+                                        <span class="score_value">{{ $trustedScore }}</span>
+                                        <span class="score_max">/10</span>
+                                    </div>
+                                </div>
+                                <h3 class="rating_text">{{ $ratingText }}</h3>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -222,8 +301,12 @@
                     <div class="impl_descrip_box">
                         <h2>HISTORY</h2>
                         @if($vehicle->history)
+                            @php
+                                $history = json_decode($vehicle->history, true);
+                                $services = $history['services'] ?? [];
+                            @endphp
                             <p>Accidents: {{ $vehicle->history->accidents ?? 'None reported' }}</p>
-                            <p>Service Records: {{ count($vehicle->history->service_records ?? []) }}</p>
+                            <p>Service Records: {{ count($services) }}</p>
                             <p>Flood Damage: {{ $vehicle->history->has_flood_damage ? 'Yes' : 'No' }}</p>
                             <p>Salvage Title: {{ $vehicle->history->has_salvage_title ? 'Yes' : 'No' }}</p>
                         @else
@@ -234,45 +317,6 @@
             </div>
         </div>
     </div>
-
-    @if(!empty($reviews))
-        <!------ User Reviews wrapper Start ------>
-        <div class="impl_review_wrapper">
-            <div class="container">
-                <div class="row">
-                    <div class="col-lg-12 col-md-12">
-                        <div class="impl_heading">
-                            <h1>user reviews</h1>
-                        </div>
-                    </div>
-                    <div class="col-lg-10 offset-lg-1">
-                        <div class="review_slider">
-                            @forelse($reviews as $review)
-                                <div class="impl_review_box">
-                                    <h2>{{ $review->title }}</h2>
-                                    <ul class="review_rating">
-                                        @for($i = 1; $i <= 5; $i++)
-                                            <li><i class="fa fa-star {{ $i <= $review->rating ? '' : 'o' }}" aria-hidden="true"></i></li>
-                                        @endfor
-                                    </ul>
-                                    <div class="review_date">
-                                        <i class="fa fa-clock-o" aria-hidden="true"></i> {{ $review->created_at->format('d F Y') }}
-                                    </div>
-                                    <p>{{ $review->content }}</p>
-                                    <h4 class="review_author">By: {{ $review->user->name }}</h4>
-                                </div>
-                            @empty
-                                <div class="impl_review_box">
-                                    <h2>No Reviews Yet</h2>
-                                    <p>Be the first to review this vehicle!</p>
-                                </div>
-                            @endforelse
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    @endif
 
     <!------ Related Cars wrapper Start ------>
     @if($relatedVehicles->count() > 0)
@@ -296,9 +340,6 @@
                                         <img src="{{ asset('images/placeholder-car.jpg') }}" alt="{{ $relatedVehicle->title }}" class="img-fluid impl_hover_car_img" />
                                     @endif
                                     <span class="impl_img_tag" title="compare">
-                                <a href="{{ route('customer.vehicles.compare', ['vehicles[]' => $relatedVehicle->id]) }}">
-                                    <i class="fa fa-exchange" aria-hidden="true"></i>
-                                </a>
                             </span>
                                 </div>
                                 <div class="impl_fea_car_data">
@@ -314,7 +355,7 @@
                                     <div class="impl_fea_btn">
                                         <button class="impl_btn">
                                             <span class="impl_doller">${{ number_format($relatedVehicle->price) }}</span>
-                                            <span class="impl_bnw">buy now</span>
+                                            <span class="impl_bnw">Buy now</span>
                                         </button>
                                     </div>
                                 </div>
@@ -327,6 +368,7 @@
     @endif
 
     <style>
+        /* Existing styles */
         .enlarged-image {
             width: 120%; /* Makes image 20% larger than its container */
             max-width: none; /* Removes any max-width restrictions */
@@ -336,5 +378,85 @@
             display: block; /* Ensures proper block formatting */
             transition: all 0.3s ease; /* Adds smooth transition when size changes */
         }
+
+        /* New styles for trusted score */
+        .impl_trusted_score {
+            padding: 30px;
+
+            border-radius: 10px;
+            height: 100%;
+        }
+
+        .trusted_score_container {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+
+        .score_circle_wrapper {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .score_circle {
+            position: relative;
+            width: 150px;
+            height: 150px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 15px;
+        }
+
+        .score_circle_inner {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            background: conic-gradient(
+                #007bff 0% var(--score-percentage),
+                #e6e6e6 var(--score-percentage) 100%
+            );
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        .score_circle_inner::before {
+            content: '';
+            position: absolute;
+            width: 130px;
+            height: 130px;
+            border-radius: 50%;
+        }
+
+        .score_value {
+            font-size: 42px;
+            font-weight: bold;
+            color: black;
+            position: relative;
+            z-index: 2;
+            line-height: 1;
+        }
+
+        .score_max {
+            font-size: 18px;
+            color: #666;
+            position: relative;
+            z-index: 2;
+        }
+
+        .rating_text {
+            font-size: 24px;
+            font-weight: bold;
+            color: white;
+            margin-top: 10px;
+        }
+
+
     </style>
 @endsection

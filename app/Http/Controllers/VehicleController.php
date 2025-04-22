@@ -165,6 +165,29 @@ class VehicleController extends Controller
         return view('customer.pages.vehicles.create', compact('carModels'));
     }
 
+    public function edit($id)
+    {
+        try {
+            // Find the vehicle
+            $vehicle = Vehicle::findOrFail($id);
+
+            // Check if user owns this vehicle
+            if (Auth::id() !== $vehicle->user_id) {
+                return redirect()->route('profile.index', ['tab' => 'vehicles'])->with('error', 'You are not authorized to edit this vehicle.');
+            }
+
+            // Get vehicle history
+            $vehicleHistory = VehicleHistory::where('vehicle_id', $vehicle->id)->first();
+
+            // Get car models for dropdown
+            $carModels = CarModel::all();
+
+            return view('customer.pages.vehicles.edit', compact('vehicle', 'vehicleHistory', 'carModels'));
+        } catch (\Exception $e) {
+            return redirect()->route('profile.index', ['tab' => 'vehicles'])->with('error', 'Vehicle not found.');
+        }
+    }
+
     public function store(Request $request)
     {
         // Validate the request data
@@ -183,7 +206,10 @@ class VehicleController extends Controller
             'ownership_count' => 'nullable|integer|min:0',
             'has_flood_damage' => 'nullable|boolean',
             'has_salvage_title' => 'nullable|boolean',
-            'service_records' => 'nullable|string',
+            'services' => 'nullable|array',
+            'services.*' => 'nullable|date',
+            'last_service' => 'nullable|date',
+            'next_service_due' => 'nullable|date',
             'history_notes' => 'nullable|string',
             'car_images.*' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
             'primary_image' => 'nullable|integer|min:0',
@@ -194,7 +220,7 @@ class VehicleController extends Controller
 
             Log::info('Starting vehicle creation process', ['user_id' => auth()->id(), 'data' => $validatedData]);
 
-            // Create slug
+            // Create slug from vehicle name
             $slug = Str::slug($validatedData['name']);
             $baseSlug = $slug;
             $counter = 1;
@@ -230,11 +256,32 @@ class VehicleController extends Controller
             $vehicleHistory->has_flood_damage = $validatedData['has_flood_damage'] ?? false;
             $vehicleHistory->has_salvage_title = $validatedData['has_salvage_title'] ?? false;
 
-            if (!empty($validatedData['service_records'])) {
-                $serviceRecords = array_map('trim', explode(',', $validatedData['service_records']));
-                $vehicleHistory->service_records = json_encode($serviceRecords);
-                Log::info('Service records saved', ['records' => $serviceRecords]);
+            // Format service records in the new structure
+            $serviceRecordsData = [
+                'services' => [],
+            ];
+
+            // Add individual services to the services object
+            if (!empty($validatedData['services'])) {
+                $serviceRecordsData['services'] = $validatedData['services'];
             }
+
+            // Add last service and next service due dates outside the services object
+            if (!empty($validatedData['last_service'])) {
+                $serviceRecordsData['last_service'] = $validatedData['last_service'];
+            }
+
+            if (!empty($validatedData['next_service_due'])) {
+                $serviceRecordsData['next_service_due'] = $validatedData['next_service_due'];
+            }
+
+            $vehicleHistory->service_records = !empty($serviceRecordsData['services']) ||
+            !empty($serviceRecordsData['last_service']) ||
+            !empty($serviceRecordsData['next_service_due'])
+                ? json_encode($serviceRecordsData)
+                : null;
+
+            Log::info('Service records saved', ['records' => $serviceRecordsData]);
 
             $vehicleHistory->notes = $validatedData['history_notes'] ?? null;
             $vehicleHistory->save();
@@ -244,12 +291,17 @@ class VehicleController extends Controller
                 $primaryImageIndex = $request->input('primary_image');
                 $files = $request->file('car_images');
 
+                // Get model name for filename
+                $modelName = DB::table('models')->where('id', $vehicle->model_id)->value('name');
+                $modelSlug = Str::slug($modelName);
+
                 foreach ($files as $index => $file) {
-                    $filename = $vehicle->id . '_' . time() . '_' . $index . '.' . $file->getClientOriginalExtension();
+                    // Create descriptive filename: model-name-year-index.extension
+                    $filename = $modelSlug . '-' . $vehicle->year . '-' . ($index + 1) . '.' . $file->getClientOriginalExtension();
                     $filePath = $file->storeAs('images/vehicles', $filename, 'public');
 
                     $image = new VehicleImage();
-                    $image->image_path = 'images/vehicles/' . $filename; // This is the relative path from storage/app/public
+                    $image->image_path = 'images/vehicles/' . $filename;
                     $image->is_primary = ($primaryImageIndex !== null && (int)$primaryImageIndex === $index);
                     $image->vehicle_id = $vehicle->id;
                     $image->save();
@@ -280,5 +332,249 @@ class VehicleController extends Controller
         }
     }
 
+    public function update(Request $request, $id)
+    {
+        // Validate the request data
+        $validatedData = $request->validate([
+            'name' => 'required|string|max:255',
+            'model_id' => 'required|exists:models,id',
+            'year' => 'required|integer|min:1900|max:' . (date('Y') + 1),
+            'mileage' => 'required|numeric|min:0',
+            'condition' => 'required|in:new,used,pre-owned',
+            'transmission' => 'required|in:auto,manual',
+            'fuel_type' => 'required|in:diesel,petrol,electric',
+            'price' => 'required|numeric|min:0',
+            'description' => 'nullable|string',
+            'location' => 'required|string',
+            'accidents' => 'nullable|integer|min:0',
+            'ownership_count' => 'nullable|integer|min:0',
+            'has_flood_damage' => 'nullable|boolean',
+            'has_salvage_title' => 'nullable|boolean',
+            'services' => 'nullable|array',
+            'services.*' => 'nullable|date',
+            'last_service' => 'nullable|date',
+            'next_service_due' => 'nullable|date',
+            'history_notes' => 'nullable|string',
+            'car_images.*' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
+            'primary_image_new' => 'nullable|integer|min:0',
+            'primary_image_existing' => 'nullable|integer|exists:vehicle_images,id',
+            'delete_images' => 'nullable|array',
+            'delete_images.*' => 'exists:vehicle_images,id',
+        ]);
+
+        try {
+            // Find the vehicle
+            $vehicle = Vehicle::findOrFail($id);
+
+            // Check if user owns this vehicle
+            if (Auth::id() !== $vehicle->user_id) {
+                return redirect()->back()->with('error', 'You are not authorized to update this vehicle.');
+            }
+
+            DB::beginTransaction();
+
+            Log::info('Starting vehicle update process', ['vehicle_id' => $id, 'user_id' => auth()->id()]);
+
+            // Update slug if title changed
+            if ($vehicle->title !== $validatedData['name']) {
+                $slug = Str::slug($validatedData['name']);
+                $baseSlug = $slug;
+                $counter = 1;
+
+                // Make sure slug is unique
+                while (Vehicle::where('slug', $slug)->where('id', '!=', $id)->exists()) {
+                    $slug = $baseSlug . '-' . $counter;
+                    $counter++;
+                }
+                $vehicle->slug = $slug;
+            }
+
+            // Update vehicle data
+            $vehicle->title = $validatedData['name'];
+            $vehicle->year = $validatedData['year'];
+            $vehicle->price = $validatedData['price'];
+            $vehicle->mileage = $validatedData['mileage'];
+            $vehicle->fuel_type = $validatedData['fuel_type'];
+            $vehicle->transmission = $validatedData['transmission'];
+            $vehicle->condition = $validatedData['condition'];
+            $vehicle->location = $validatedData['location'];
+            $vehicle->description = $validatedData['description'] ?? null;
+            $vehicle->model_id = $validatedData['model_id'];
+            $vehicle->save();
+
+            Log::info('Vehicle updated successfully', ['vehicle_id' => $vehicle->id]);
+
+            // Update or create vehicle history
+            $vehicleHistory = VehicleHistory::firstOrNew(['vehicle_id' => $vehicle->id]);
+            $vehicleHistory->accidents = $validatedData['accidents'] ?? 0;
+            $vehicleHistory->ownership_count = $validatedData['ownership_count'] ?? 1;
+            $vehicleHistory->has_flood_damage = $validatedData['has_flood_damage'] ?? false;
+            $vehicleHistory->has_salvage_title = $validatedData['has_salvage_title'] ?? false;
+
+            // Format service records in the new structure
+            $serviceRecordsData = [
+                'services' => [],
+            ];
+
+            // Add individual services to the services object
+            if (!empty($validatedData['services'])) {
+                $serviceRecordsData['services'] = $validatedData['services'];
+            }
+
+            // Add last service and next service due dates outside the services object
+            if (!empty($validatedData['last_service'])) {
+                $serviceRecordsData['last_service'] = $validatedData['last_service'];
+            }
+
+            if (!empty($validatedData['next_service_due'])) {
+                $serviceRecordsData['next_service_due'] = $validatedData['next_service_due'];
+            }
+
+            $vehicleHistory->service_records = !empty($serviceRecordsData['services']) ||
+            !empty($serviceRecordsData['last_service']) ||
+            !empty($serviceRecordsData['next_service_due'])
+                ? json_encode($serviceRecordsData)
+                : null;
+
+            $vehicleHistory->notes = $validatedData['history_notes'] ?? null;
+            $vehicleHistory->save();
+
+            Log::info('Vehicle history updated', ['vehicle_history_id' => $vehicleHistory->id]);
+
+            // Handle image deletion if any
+            if (!empty($validatedData['delete_images'])) {
+                foreach ($validatedData['delete_images'] as $imageId) {
+                    $image = VehicleImage::where('id', $imageId)
+                        ->where('vehicle_id', $vehicle->id)
+                        ->first();
+
+                    if ($image) {
+                        // Delete physical file
+                        if (file_exists(public_path('storage/' . $image->image_path))) {
+                            unlink(public_path('storage/' . $image->image_path));
+                        }
+                        $image->delete();
+                        Log::info('Deleted image', ['image_id' => $imageId]);
+                    }
+                }
+            }
+
+            // Set primary image from existing images
+            if (!empty($validatedData['primary_image_existing'])) {
+                // Reset all images to non-primary
+                VehicleImage::where('vehicle_id', $vehicle->id)
+                    ->update(['is_primary' => false]);
+
+                // Set the selected image as primary
+                VehicleImage::where('id', $validatedData['primary_image_existing'])
+                    ->where('vehicle_id', $vehicle->id)
+                    ->update(['is_primary' => true]);
+
+                Log::info('Updated primary image', ['image_id' => $validatedData['primary_image_existing']]);
+            }
+
+            // Upload new images if any
+            if ($request->hasFile('car_images')) {
+                $primaryImageIndex = $request->input('primary_image_new');
+                $files = $request->file('car_images');
+
+                // Get model name for filename
+                $modelName = DB::table('models')->where('id', $vehicle->model_id)->value('name');
+                $modelSlug = Str::slug($modelName);
+
+                foreach ($files as $index => $file) {
+                    // Create descriptive filename
+                    $filename = $modelSlug . '-' . $vehicle->year . '-' . time() . '-' . ($index + 1) . '.' . $file->getClientOriginalExtension();
+                    $filePath = $file->storeAs('images/vehicles', $filename, 'public');
+
+                    $image = new VehicleImage();
+                    $image->image_path = 'images/vehicles/' . $filename;
+
+                    // Set as primary if selected AND no existing primary was selected
+                    $isPrimary = ($primaryImageIndex !== null && (int)$primaryImageIndex === $index && empty($validatedData['primary_image_existing']));
+
+                    // If this is primary, reset all other images
+                    if ($isPrimary) {
+                        VehicleImage::where('vehicle_id', $vehicle->id)
+                            ->update(['is_primary' => false]);
+                    }
+
+                    $image->is_primary = $isPrimary;
+                    $image->vehicle_id = $vehicle->id;
+                    $image->save();
+
+                    Log::info('New image uploaded', ['image' => $image->image_path, 'is_primary' => $image->is_primary]);
+                }
+            }
+
+            // If no primary image exists, set the first image as primary
+            $hasPrimary = VehicleImage::where('vehicle_id', $vehicle->id)
+                ->where('is_primary', true)
+                ->exists();
+
+            if (!$hasPrimary) {
+                $firstImage = VehicleImage::where('vehicle_id', $vehicle->id)->first();
+                if ($firstImage) {
+                    $firstImage->is_primary = true;
+                    $firstImage->save();
+                    Log::info('Set default primary image', ['image_id' => $firstImage->id]);
+                }
+            }
+
+            DB::commit();
+
+            return redirect()->route('profile.index', ['tab' => 'vehicles'])->with('success', 'Vehicle updated successfully.');
+
+        } catch (\Exception $e) {
+            DB::rollBack();
+            Log::error('Vehicle update failed', ['error' => $e->getMessage(), 'trace' => $e->getTraceAsString()]);
+            return redirect()->back()->with('error', 'Failed to update vehicle: ' . $e->getMessage())->withInput();
+        }
+    }
+
+    public function destroy($id)
+    {
+        try {
+            // Find the vehicle
+            $vehicle = Vehicle::findOrFail($id);
+
+            // Check if user owns this vehicle
+            if (Auth::id() !== $vehicle->user_id) {
+                return redirect()->back()->with('error', 'You are not authorized to delete this vehicle.');
+            }
+
+            // Begin transaction to ensure data integrity
+            DB::beginTransaction();
+
+            // Delete associated images
+            $images = VehicleImage::where('vehicle_id', $vehicle->id)->get();
+
+            foreach ($images as $image) {
+                // Delete the physical file
+                if (file_exists(public_path($image->image_path))) {
+                    unlink(public_path($image->image_path));
+                }
+
+                // Delete the database record
+                $image->delete();
+            }
+
+            // Delete associated vehicle history
+            VehicleHistory::where('vehicle_id', $vehicle->id)->delete();
+
+            // Delete the vehicle
+            $vehicle->delete();
+
+            // Commit transaction
+            DB::commit();
+
+            return redirect()->route('profile.index', ['tab' => 'vehicles'])->with('success', 'Vehicle has been deleted successfully.');
+
+        } catch (\Exception $e) {
+            // Rollback transaction on error
+            DB::rollBack();
+            return redirect()->back()->with('error', 'Something went wrong: ' . $e->getMessage());
+        }
+    }
 
 }
