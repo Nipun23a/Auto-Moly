@@ -90,11 +90,25 @@
                                 <div class="panel-heading">
                                     <h4 class="panel-title">
                                         <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo">
-                                            Secure and Trusted Transactions
+                                            AI-Powered Price Predictor
                                         </a>
                                     </h4>
                                 </div>
                                 <div id="collapseTwo" class="panel-collapse collapse">
+                                    <div class="panel-body">
+                                        At Auto Molly, our AI-Powered Price Predictor takes the guesswork out of car pricing. By analyzing key vehicle details—such as year, make, model, condition, mileage, and more—our intelligent system provides an accurate, real-time market estimate. Whether you're buying, selling, or just curious, trust our data-driven tool to deliver fair and transparent pricing instantly.
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <h4 class="panel-title">
+                                        <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseThree">
+                                            Secure and Trusted Transactions
+                                        </a>
+                                    </h4>
+                                </div>
+                                <div id="collapseThree" class="panel-collapse collapse">
                                     <div class="panel-body">
                                         We prioritize your security. All transactions on Auto Molly are encrypted, verified, and 100% secure—backed by real-time fraud protection technology.
                                     </div>
@@ -103,12 +117,12 @@
                             <div class="panel panel-default">
                                 <div class="panel-heading">
                                     <h4 class="panel-title">
-                                        <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseThree">
+                                        <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseFour">
                                             Why Choose Auto Molly?
                                         </a>
                                     </h4>
                                 </div>
-                                <div id="collapseThree" class="panel-collapse collapse">
+                                <div id="collapseFour" class="panel-collapse collapse">
                                     <div class="panel-body">
                                         We blend cutting-edge AI, a vast vehicle inventory, and seamless buying/selling tools to give you the most efficient and reliable car marketplace experience.
                                     </div>

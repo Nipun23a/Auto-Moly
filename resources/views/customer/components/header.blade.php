@@ -194,6 +194,7 @@
                                     <li><a href="{{route('about')}}">About Us</a></li>
                                     <li><a href="{{route('customer.vehicles.index')}}">Vehicle</a></li>
                                     <li><a href="{{route('scanner')}}">Scanner</a></li>
+                                    <li><a href="{{route('prediction')}}">Price Predictor</a></li>
                                     <li><a href="{{route('service')}}">Service</a></li>
                                 </ul>
                             </nav>

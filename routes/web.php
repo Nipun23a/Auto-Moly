@@ -32,6 +32,9 @@ Route::get('/about',function (){
 Route::get('/scanner',function (){
     return view('customer.pages.scanner');
 })->name('scanner');
+Route::get('/prediction',function (){
+    return view('customer.pages.price-prediction');
+})->name('prediction');
 
 
 Route::get('/search', [\App\Http\Controllers\DashboardController::class, 'searchVehicles'])->name('search.vehicles');

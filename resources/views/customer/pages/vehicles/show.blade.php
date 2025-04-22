@@ -49,9 +49,13 @@
                         </div>
                         <p>{{ Str::limit($vehicle->description, 250) }}</p>
                         <div class="impl_old_buy_btn">
-                            <a href="{{ route('checkout', $vehicle->id) }}" class="impl_btn">Buy now</a>
-
+                            @auth
+                                <a href="{{ route('checkout', $vehicle->id) }}" class="impl_btn">Buy now</a>
+                            @else
+                                <p class="text-danger">Please log in to continue</p>
+                            @endauth
                         </div>
+
                     </div>
                 </div>
             </div>
