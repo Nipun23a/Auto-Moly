@@ -18,6 +18,8 @@ def check_models():
         'models/solution_model.pkl',
         'models/problem_encoder.pkl',
         'models/solution_encoder.pkl',
+        'models/ground_clearance_model.pkl',
+        'models/fuel_consumption_model.pkl',
         'car_price_prediction_model.joblib',
     ]
 
@@ -89,6 +91,35 @@ def predict_car_price(data):
         raise Exception(f"Error making prediction: {str(e)}")
 
 # Function to make predictions
+def predict_vehicle_metrics(car_model, manufacture_year):
+    try:
+        # Load the trained models
+        ground_clearance_model = joblib.load('models/ground_clearance_model.pkl')
+        fuel_consumption_model = joblib.load('models/fuel_consumption_model.pkl')
+
+        # Calculate vehicle age
+        current_year = 2025  # You can update this or use datetime.now().year
+        vehicle_age = current_year - manufacture_year
+
+        # Create a dataframe for prediction - removed city, state, and service history
+        prediction_df = pd.DataFrame({
+            'VEHICAL COMPANY': [car_model],
+            'MANUFACTURE_YEAR': [manufacture_year],
+            'VEHICLE_AGE': [vehicle_age]
+        })
+
+        # Make predictions
+        ground_clearance_prediction = float(ground_clearance_model.predict(prediction_df)[0])
+        fuel_consumption_prediction = float(fuel_consumption_model.predict(prediction_df)[0])
+
+        # Return predictions
+        return {
+            'ground_clearance': ground_clearance_prediction,
+            'fuel_consumption': fuel_consumption_prediction
+        }
+    except Exception as e:
+        raise Exception(f"Error predicting vehicle metrics: {str(e)}")
+
 def predict_issues_and_solutions(car_model, manufacture_year):
     try:
         # Load the trained models and encoders
@@ -216,8 +247,15 @@ def predict():
                 'message': 'manufacture_year must be a valid integer'
             }), 400
 
-        # Make prediction
+        # Make predictions for issues and solutions
         prediction_result = predict_issues_and_solutions(car_model, manufacture_year)
+
+        # Make predictions for vehicle metrics
+        try:
+            vehicle_metrics = predict_vehicle_metrics(car_model, manufacture_year)
+            prediction_result.update(vehicle_metrics)
+        except Exception as e:
+            prediction_result['vehicle_metrics_error'] = str(e)
 
         # Add vehicle info to response
         prediction_result['vehicle_info'] = {
