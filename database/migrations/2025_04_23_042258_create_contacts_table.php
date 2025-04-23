@@ -11,12 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('ai_recommendations', function (Blueprint $table) {
+        Schema::create('contacts', function (Blueprint $table) {
             $table->id();
-            $table -> unsignedBigInteger('user_id');
-            $table -> unsignedBigInteger('vehicle_id');
-            $table -> float('score');
-            $table -> text('reason');
+            $table->string('first_name');
+            $table->string('email');
+            $table->string('subject')->nullable();
+            $table->text('message');
             $table->timestamps();
         });
     }
@@ -26,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('ai_recommendations');
+        Schema::dropIfExists('contacts');
     }
 };

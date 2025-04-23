@@ -52,19 +52,48 @@
                     </div>
                 </div>
 
-                <!-- Secure Transactions -->
+                <!-- Vehicle Price Prediction -->
                 <div class="col-lg-4 col-md-6">
                     <div class="impl_facility_wrapper text-center">
-                        <img src="{{asset('images/services/secure-payment.jpg')}}" alt="Secure Transaction" class="img-fluid" />
+                        <img src="{{asset('images/services/price-prediction.jpg')}}" alt="Price Prediction AI" class="img-fluid" />
                         <div class="impl_ser_hover_ovrly">
                             <div class="impl_ser_text">
-
-                                <h3>Secure Transaction</h3>
-                                <p>Buy or sell your vehicle with full confidence using our secure transaction system.</p>
+                                <h3>AI-Powered Price Prediction</h3>
+                                <p>Our advanced AI model predicts your vehicle’s market price using real-time data from condition, mileage, service history, and market trends.</p>
                             </div>
                         </div>
                     </div>
                 </div>
+
+
+                <!-- Secure Transactions -->
+                <div class="col-12">
+                    <div class="row justify-content-center">
+                        <div class="col-lg-4 col-md-6">
+                            <div class="impl_facility_wrapper text-center">
+                                <img src="{{asset('images/services/secure-payment.jpg')}}" alt="Secure Transaction" class="img-fluid" />
+                                <div class="impl_ser_hover_ovrly">
+                                    <div class="impl_ser_text">
+                                        <h3>Secure Transaction</h3>
+                                        <p>Buy or sell your vehicle with full confidence using our secure transaction system.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-4 col-md-6">
+                            <div class="impl_facility_wrapper text-center">
+                                <img src="{{ asset('images/services/leasing-calculator.jpg') }}" alt="Leasing Calculator" class="img-fluid" />
+                                <div class="impl_ser_hover_ovrly">
+                                    <div class="impl_ser_text">
+                                        <h3>Leasing Calculator</h3>
+                                        <p>Estimate your monthly leasing payments based on vehicle price, down payment, term length, and interest rate.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
             </div>
         </div>
     </div>

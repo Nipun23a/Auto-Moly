@@ -567,21 +567,30 @@
                 // Show results section
                 document.getElementById('prediction_results').style.display = 'block';
 
+                // Define USD to LKR conversion rate (example rate - update with current rate)
+                const usdToLkrRate = 315.50; // Example rate: 1 USD = 315.50 LKR
+
+                // Convert USD prices to LKR
+                const predictedPriceLKR = data.predicted_price * usdToLkrRate;
+                const priceRangeLowLKR = data.price_range_low * usdToLkrRate;
+                const priceRangeHighLKR = data.price_range_high * usdToLkrRate;
+                const pricePerKmLKR = data.price_per_mile * usdToLkrRate / 1.60934; // Convert miles to km
+
                 // Populate vehicle info
                 document.getElementById('result_make_model').textContent = `${data.vehicle_info.manufacturer} ${data.vehicle_info.model}`;
                 document.getElementById('result_year').textContent = data.vehicle_info.year;
                 document.getElementById('result_condition').textContent = data.vehicle_info.condition.charAt(0).toUpperCase() + data.vehicle_info.condition.slice(1);
-                document.getElementById('result_odometer').textContent = `${formatNumber(data.vehicle_info.odometer)} mi`;
+                document.getElementById('result_odometer').textContent = `${formatNumber(data.vehicle_info.odometer)} km`;  // Changed to km for Sri Lanka
                 document.getElementById('result_age').textContent = `${data.vehicle_info.car_age} years`;
                 document.getElementById('result_transmission').textContent = data.vehicle_info.transmission.charAt(0).toUpperCase() + data.vehicle_info.transmission.slice(1);
                 document.getElementById('result_drive').textContent = data.vehicle_info.drive.toUpperCase();
                 document.getElementById('result_type').textContent = data.vehicle_info.type.charAt(0).toUpperCase() + data.vehicle_info.type.slice(1);
 
-                // Populate price prediction
-                document.getElementById('predicted_price').textContent = '$' + formatNumber(Math.round(data.predicted_price));
-                document.getElementById('price_range_low').textContent = '$' + formatNumber(Math.round(data.price_range_low));
-                document.getElementById('price_range_high').textContent = '$' + formatNumber(Math.round(data.price_range_high));
-                document.getElementById('price_per_mile').textContent = '$' + data.price_per_mile.toFixed(2);
+                // Populate price prediction with LKR (Sri Lankan Rupees)
+                document.getElementById('predicted_price').textContent = 'LKR ' + formatNumber(Math.round(predictedPriceLKR));
+                document.getElementById('price_range_low').textContent = 'LKR ' + formatNumber(Math.round(priceRangeLowLKR));
+                document.getElementById('price_range_high').textContent = 'LKR ' + formatNumber(Math.round(priceRangeHighLKR));
+                document.getElementById('price_per_mile').textContent = 'LKR ' + pricePerKmLKR.toFixed(2) + '/km';  // Changed to km
 
                 // Set confidence level class
                 const confidenceElement = document.getElementById('confidence_level');

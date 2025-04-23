@@ -39,12 +39,12 @@
                 <div class="col-lg-6 col-md-12">
                     <div class="impl_buycar_data">
                         <h1>{{ $vehicle->model->brand->name }}, {{ $vehicle->model->name }}</h1>
-                        <h1>${{ number_format($vehicle->price) }}</h1>
+                        <h1>Rs {{ number_format($vehicle->price) }}</h1>
                         <div class="car_emi_wrapper">
                             @php
                                 $emiEstimate = round($vehicle->price / 36);
                             @endphp
-                            <span>EMI Starts at ${{ number_format($emiEstimate) }} /- *</span>
+                            <span>EMI Starts at Rs {{ number_format($emiEstimate) }} /- *</span>
                             <a href="#"><i class="fa fa-info-circle" aria-hidden="true"></i> Get EMI Assistance</a>
                         </div>
                         <p>{{ Str::limit($vehicle->description, 250) }}</p>
@@ -358,7 +358,7 @@
                                     </ul>
                                     <div class="impl_fea_btn">
                                         <button class="impl_btn">
-                                            <span class="impl_doller">${{ number_format($relatedVehicle->price) }}</span>
+                                            <span class="impl_doller">Rs {{ number_format($relatedVehicle->price) }}</span>
                                             <span class="impl_bnw">Buy now</span>
                                         </button>
                                     </div>

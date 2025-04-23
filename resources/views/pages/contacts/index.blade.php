@@ -30,7 +30,7 @@
                             <td class="px-6 py-4 whitespace-nowrap">{{ $message->email }}</td>
                             <td class="px-6 py-4 whitespace-nowrap">{{ $message->subject ?? '—' }}</td>
                             <td class="px-6 py-4 whitespace-nowrap">
-                                <a href="{{ route('contact-messages.show', $message->id) }}" class="text-blue-600 hover:text-blue-900">View</a>
+                                <a href="{{ route('admin.contact-messages.show', $message->id) }}" class="text-blue-600 hover:text-blue-900">View</a>
                             </td>
                         </tr>
                     @empty

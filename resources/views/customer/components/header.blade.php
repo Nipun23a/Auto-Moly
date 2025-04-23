@@ -193,9 +193,11 @@
                                     <li><a href="{{route('home')}}" class="active">Home</a></li>
                                     <li><a href="{{route('about')}}">About Us</a></li>
                                     <li><a href="{{route('customer.vehicles.index')}}">Vehicle</a></li>
-                                    <li><a href="{{route('scanner')}}">Scanner</a></li>
-                                    <li><a href="{{route('prediction')}}">Price Predictor</a></li>
+                                    <li><a href="{{route('scanner')}}">Scanner AI</a></li>
+                                    <li><a href="{{route('prediction')}}">Price AI</a></li>
+                                    <li><a href="{{route('leasing')}}">Leasing</a> </li>
                                     <li><a href="{{route('service')}}">Service</a></li>
+                                    <li><a href="{{route('contact')}}">Contact</a></li>
                                 </ul>
                             </nav>
                         </div>

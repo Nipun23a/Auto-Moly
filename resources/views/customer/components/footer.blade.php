@@ -18,7 +18,8 @@
                             <li><a href="{{route('customer.vehicles.index')}}"><i class="fa fa-angle-right" aria-hidden="true"></i> Vehicle Purchase</a></li>
                             <li><a href="{{route('customer.vehicles.index')}}"><i class="fa fa-angle-right" aria-hidden="true"></i> Sell Your Car</a></li>
                             <li><a href="{{route('scanner')}}"><i class="fa fa-angle-right" aria-hidden="true"></i> Auto AI Scanner</a></li>
-                            <li><a href="{{route('scanner')}}"><i class="fa fa-angle-right" aria-hidden="true"></i> Inspection & Reports</a></li>
+                            <li><a href="{{route('prediction')}}"><i class="fa fa-angle-right" aria-hidden="true"></i> Price Prediction AI</a></li>
+                            <li><a href="{{route('leasing')}}"><i class="fa fa-angle-right" aria-hidden="true"></i> Leasing</a></li>
                         </ul>
                     </div>
                 </div>

@@ -14,12 +14,12 @@
                             <h4 style="color: black">{{ $vehicle->title }}</h4>
                             <div class="d-flex justify-content-between align-items-center">
                                 <span class="text-muted" style="color: black">Vehicle Price</span>
-                                <span class="font-weight-bold" style="color: black">${{ number_format($vehicle->price, 2) }}</span>
+                                <span class="font-weight-bold" style="color: black">Rs {{ number_format($vehicle->price, 2) }}</span>
                             </div>
                             <hr>
                             <div class="d-flex justify-content-between align-items-center">
                                 <span class="h5" style="color: black">Total</span>
-                                <span class="h5" style="color: black">${{ number_format($vehicle->price, 2) }}</span>
+                                <span class="h5" style="color: black">Rs {{ number_format($vehicle->price, 2) }}</span>
                             </div>
                         </div>
 
@@ -39,7 +39,7 @@
                                 <button type="submit" class="btn btn-primary btn-lg w-100" id="submit-button">
                                     <div class="d-flex align-items-center justify-content-center">
                                         <i class="fas fa-lock mr-2"></i>
-                                        <span>Pay ${{ number_format($vehicle->price, 2) }}</span>
+                                        <span>Pay Rs {{ number_format($vehicle->price, 2) }}</span>
                                         <div id="spinner" class="spinner-border spinner-border-sm ml-2 d-none" role="status"></div>
                                     </div>
                                 </button>

@@ -104,7 +104,7 @@
                                                     </ul>
                                                     <div class="impl_fea_btn">
                                                         <button class="impl_btn">
-                                                            <span class="impl_doller">${{ number_format($vehicle->price) }}</span>
+                                                            <span class="impl_doller">Rs {{ number_format($vehicle->price) }}</span>
                                                             <span class="impl_bnw">buy now</span>
                                                         </button>
                                                     </div>

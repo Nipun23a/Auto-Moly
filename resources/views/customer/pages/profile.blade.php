@@ -157,7 +157,7 @@
                                                 @foreach(Auth::user()->vehicles as $vehicle)
                                                     <tr>
                                                         <td>{{ $vehicle->title }}</td>
-                                                        <td>${{ number_format($vehicle->price, 2) }}</td>
+                                                        <td>Rs {{ number_format($vehicle->price, 2) }}</td>
                                                         <td>
                                                             @if($vehicle->status == 'available')
                                                                 <span class="badge badge-success">Available</span>
@@ -225,7 +225,7 @@
                                                 @foreach($buyerTransactions as $transaction)
                                                     <tr>
                                                         <td>{{ $transaction->vehicle->title }}</td>
-                                                        <td>${{ number_format($transaction->vehicle->price, 2) }}</td>
+                                                        <td>Rs {{ number_format($transaction->vehicle->price, 2) }}</td>
                                                         <td>{{ ucfirst($transaction->payment_method) }}</td>
                                                         <td>
                                                             @if($transaction->payment_status == 'paid')

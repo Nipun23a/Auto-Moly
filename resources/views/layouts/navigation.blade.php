@@ -33,6 +33,12 @@
                         {{ __('Vehicle') }}
                     </x-nav-link>
                 </div>
+                <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                    <x-nav-link :href="route('admin.contact-messages.index')" :active="request()->routeIs('admin.contact-messages.index')">
+                        {{ __('Contact') }}
+                    </x-nav-link>
+                </div>
+
             </div>
 
             <!-- Settings Dropdown -->
@@ -87,6 +93,26 @@
             <x-responsive-nav-link :href="route('admin.dashboard')" :active="request()->routeIs('admin.dashboard')">
                 {{ __('Dashboard') }}
             </x-responsive-nav-link>
+
+            <x-responsive-nav-link :href="route('admin.brands.index')" :active="request()->routeIs('admin.brands.index')">
+                {{ __('Brands') }}
+            </x-responsive-nav-link>
+
+            <x-responsive-nav-link :href="route('admin.categories.index')" :active="request()->routeIs('admin.categories.index')">
+                {{ __('Categories') }}
+            </x-responsive-nav-link>
+
+            <x-responsive-nav-link :href="route('admin.models.index')" :active="request()->routeIs('admin.models.index')">
+                {{ __('Models') }}
+            </x-responsive-nav-link>
+
+            <x-responsive-nav-link :href="route('admin.vehicles.index')" :active="request()->routeIs('admin.vehicles.index')">
+                {{ __('Vehicle') }}
+            </x-responsive-nav-link>
+
+            <x-responsive-nav-link :href="route('admin.contact-messages.index')" :active="request()->routeIs('admin.contact-messages.index')">
+                {{ __('Contact') }}
+            </x-responsive-nav-link>
         </div>
 
         <!-- Responsive Settings Options -->
@@ -106,12 +132,13 @@
                     @csrf
 
                     <x-responsive-nav-link :href="route('logout')"
-                            onclick="event.preventDefault();
-                                        this.closest('form').submit();">
+                                           onclick="event.preventDefault();
+                                    this.closest('form').submit();">
                         {{ __('Log Out') }}
                     </x-responsive-nav-link>
                 </form>
             </div>
         </div>
     </div>
+
 </nav>

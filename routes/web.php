@@ -4,6 +4,8 @@ use App\Http\Controllers\AdminVehicleController;
 use App\Http\Controllers\BrandController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ChatbotController;
+use App\Http\Controllers\ContactController;
+use App\Http\Controllers\ContactFormController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ModelController;
 use App\Http\Controllers\PaymentController;
@@ -36,6 +38,16 @@ Route::get('/prediction',function (){
     return view('customer.pages.price-prediction');
 })->name('prediction');
 
+Route::get('/contact',function (){
+    return view('customer.pages.contact');
+})->name('contact');
+
+Route::get('/leasing',function (){
+    return view('customer.pages.leasing');
+})->name('leasing');
+
+
+
 
 Route::get('/search', [\App\Http\Controllers\DashboardController::class, 'searchVehicles'])->name('search.vehicles');
 Route::get('/vehicles', [VehicleController::class, 'index'])->name('customer.vehicles.index');
@@ -49,6 +61,8 @@ Route::get('/checkout/{vehicle}', [PaymentController::class, 'checkout'])->name(
 Route::post('/checkout/{vehicle}', [PaymentController::class, 'processPayment'])->name('payment.process');
 Route::get('/new', [VehicleController::class, 'filterByCondition'])->name('customer.vehicles.new')->defaults('condition', 'new');
 Route::get('/used', [VehicleController::class, 'filterByCondition'])->name('customer.vehicles.used')->defaults('condition', 'used');
+Route::post('/contact', [ContactController::class, 'store'])->name('contact.store');
+
 Route::middleware(['auth'])->group(function () {
     Route::get('/profile', [UserProfileController::class, 'index'])->name('profile.index');
     Route::put('/profile/update', [UserProfileController::class, 'update'])->name('profile.update');
@@ -69,6 +83,8 @@ Route::middleware(['auth','admin'])->prefix('admin')->name('admin.')->group(func
     Route::resource('categories',CategoryController::class);
     Route::resource('brands',BrandController::class);
     Route::resource('models',ModelController::class);
+    Route::get('/contact-messages', [\App\Http\Controllers\ContactController::class, 'index'])->name('contact-messages.index');
+    Route::get('/contact-messages/{id}', [ContactController::class, 'show'])->name('contact-messages.show');
     Route::resource('vehicles',\App\Http\Controllers\AdminVehicleController::class);
     Route::patch('/vehicles/{vehicle}/update-status',[AdminVehicleController::class,'updateStatus'])->name('vehicles.updateStatus');
 });
